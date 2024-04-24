@@ -1,5 +1,5 @@
 Szakdolgozat
 
-[Funkcionális Követemények](Wiki/FunkcionalisKovetelmenyek)
-[Szakdolgozat alapvázlat](Wiki/SzakdolgozatAlapvazlat)
-[UI Wireframe](Wiki/UiWireframe)
+[Funkcionális Követemények](Wiki/FunkcionalisKovetelmenyek.md)
+[Szakdolgozat alapvázlat](Wiki/SzakdolgozatAlapvazlat.md)
+[UI Wireframe](Wiki/UiWireframe.md)
