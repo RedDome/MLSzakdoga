@@ -1,11 +1,12 @@
 import tkinter as tk
 import time
 import gymnasium as gym
-from stable_baselines3 import A2C, PPO
+from stable_baselines3 import A2C, PPO, DQN, SAC, TD3
 from stable_baselines3.common import base_class
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.callbacks import EvalCallback
 import os
+from tkinter import ttk
 
 length = 100000
 learningmodel = "PPO"
@@ -93,10 +94,24 @@ class MyApp:
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("Change Iterations")
         self.new_window.geometry("400x400")
-        self.model_list = tk.Listbox(self.new_window)
+        self.model_list = ttk.Treeview(self.new_window, columns=("Algorithm Name", "Description"))
+        self.model_list.heading("#0", text="Model Name")
+        self.model_list.heading("#1", text="Description")
+        # elf.model_list.bind('<<ListboxSelect>>', self.update_description)
+        # self.model_description = tk.Label(self.new_window, text="")
+        # self.model_description.pack()
         self.model_list.pack()
-        self.model_list.insert(tk.END, "A2C")
-        self.model_list.insert(tk.END, "PPO")
+        self.model_list.insert("", tk.END, text = "A2C", values = "test")
+        self.model_list.insert("", tk.END, text = "PPO", values = "test")
+        self.model_list.insert("", tk.END, text = "DQN", values = "test")
+        self.model_list.insert("", tk.END, text = "SAC", values = "test")
+        self.model_list.insert("", tk.END, text = "TD3", values = "test")
+
+        self.envi_list = ttk.Treeview(self.new_window, columns=("Environment Name", "Description"))
+        self.model_list.heading("#0", text="Environment Name")
+        self.model_list.heading("#1", text="Description")
+        self.envi_list.pack()
+        self.envi_list.insert("", tk.END, text = "LunarLander-v2", values = "test")
         # self.submit_button = tk.Button(self.new_window, text="Submit", command=self.update_iterations)
         # self.submit_button.pack()
         self.new_window.grab_set()
@@ -110,11 +125,19 @@ class MyApp:
     def update_iterations(self):
         global length
 
-        if (self.model_list.get(tk.ACTIVE) == "A2C"):
-            learningmodel = "A2C"
+        selected_model = self.model_list.item(self.model_list.selection())['text']
         
-        if (self.model_list.get(tk.ACTIVE) == "PPO"):
-            learningmodel = "PPO"
+        match selected_model:
+            case "A2C":
+                learningmodel = "A2C"
+            case "PPO":
+                learningmodel = "PPO"
+            case "DQN":
+                learningmodel = "DQN"
+            case "SAC":
+                learningmodel = "SAC"
+            case "TD3":
+                learningmodel = "TD3"
 
         if self.input_field.get():
             length = (int(self.input_field.get()))
