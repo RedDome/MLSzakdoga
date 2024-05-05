@@ -49,7 +49,7 @@ class MyApp:
         message = "Learning..."
         self.display_message(message)
 
-        models_dir = "models/PPO"
+        models_dir = f"models/{learningmodel}"
         logdir = "logs"
 
         if not os.path.exists(models_dir):
@@ -58,9 +58,19 @@ class MyApp:
         if not os.path.exists(logdir):
             os.makedirs(logdir)
 
-        env = gym.make("LunarLander-v2", render_mode="rgb_array")
+        env = gym.make(str(environment), render_mode="rgb_array")
 
-        model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
+        match learningmodel:
+            case "A2C":
+                model = A2C("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
+            case "PPO":
+                model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
+            case "DQN":
+                model = DQN("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
+            case "SAC":
+                model = SAC("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
+            case "TD3":
+                model = TD3("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
 
         TIMESTEPS = 10000
         itera = length // TIMESTEPS
@@ -72,20 +82,36 @@ class MyApp:
         message = "Listing models..."
         self.display_message(message)
 
-        models_dir="models/PPO"
-        for filename in os.listdir(models_dir):
-            if filename.endswith(".zip"):  # Assuming model files are saved as zip files
-                model_path = os.path.join(models_dir, filename)
-                try:
-                    model = PPO.load(model_path)
-                    env = gym.make("LunarLander-v2", render_mode="rgb_array")
+        # models_dir=f"models/{learningmodel}"
+        
+        models_dir = "models/"
+        for folder in os.listdir(models_dir):
+            folder_path = os.path.join(models_dir, folder)
+            if os.path.isdir(folder_path):
+                for filename in os.listdir(folder_path):
+                    if filename.endswith(".zip"):  # Assuming model files are saved as zip files
+                        model_path = os.path.join(folder_path, filename)
+                        try:
+                            match learningmodel:
+                                case "A2C":
+                                    model = A2C.load(model_path)
+                                case "PPO":
+                                    model = PPO.load(model_path)
+                                case "DQN":
+                                    model = DQN.load(model_path)
+                                case "SAC":
+                                    model = SAC.load(model_path)
+                                case "TD3":
+                                    model = TD3.load(model_path)
+                    
+                            env = gym.make(str(environment), render_mode="rgb_array")
 
-                    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=2)
-                    message = f"Model: {filename}, Mean Reward: {round(mean_reward, 2)}, Std Reward: {round(std_reward, 2)}"
-                    self.display_message(message)
-                except Exception as e:
-                    message = f"Error loading model '{filename}': {e}"
-                    self.display_message(message)
+                            mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=2)
+                            message = f"Model full path: {model_path}, Mean Reward: {round(mean_reward, 2)}, Std Reward: {round(std_reward, 2)}"
+                            self.display_message(message)
+                        except Exception as e:
+                            message = f"Error loading model '{filename}': {e}"
+                            self.display_message(message)
 
     def change_iterations(self):
         message = "Changing iterations/model learning..."
