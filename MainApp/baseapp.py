@@ -36,7 +36,7 @@ class MyApp:
         self.list_models_button = tk.Button(master, text="List Models", command=self.list_models)
         self.list_models_button.pack()
         
-        self.change_iterations_button = tk.Button(master, text="Change Iterations/Model Learning", command=self.change_iterations)
+        self.change_iterations_button = tk.Button(master, text="Change Iterations/Algorithm/Environment", command=self.change_iterations)
         self.change_iterations_button.pack()
         
         self.render_model_button = tk.Button(master, text="Render Model", command=self.render_model)
@@ -93,13 +93,12 @@ class MyApp:
 
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("Change Iterations")
-        self.new_window.geometry("400x400")
+        self.new_window.geometry("600x600")
+        self.new_window.grab_set()
+
         self.model_list = ttk.Treeview(self.new_window, columns=("Algorithm Name", "Description"))
         self.model_list.heading("#0", text="Model Name")
         self.model_list.heading("#1", text="Description")
-        # elf.model_list.bind('<<ListboxSelect>>', self.update_description)
-        # self.model_description = tk.Label(self.new_window, text="")
-        # self.model_description.pack()
         self.model_list.pack()
         self.model_list.insert("", tk.END, text = "A2C", values = "test")
         self.model_list.insert("", tk.END, text = "PPO", values = "test")
@@ -108,22 +107,24 @@ class MyApp:
         self.model_list.insert("", tk.END, text = "TD3", values = "test")
 
         self.envi_list = ttk.Treeview(self.new_window, columns=("Environment Name", "Description"))
-        self.model_list.heading("#0", text="Environment Name")
-        self.model_list.heading("#1", text="Description")
+        self.envi_list.heading("#0", text="Environment Name")
+        self.envi_list.heading("#1", text="Description")
         self.envi_list.pack()
         self.envi_list.insert("", tk.END, text = "LunarLander-v2", values = "test")
-        # self.submit_button = tk.Button(self.new_window, text="Submit", command=self.update_iterations)
-        # self.submit_button.pack()
-        self.new_window.grab_set()
+        self.envi_list.insert("", tk.END, text = "CartPole-v1", values = "test")
 
+        self.change_iter_label = tk.Label(self.new_window, text=f"Current Iterations: {length}, change below:")
+        self.change_iter_label.pack()
         self.input_field = tk.Entry(self.new_window)
         self.input_field.pack()
 
-        self.submit_button = tk.Button(self.new_window, text="Submit", command=self.update_iterations)
+        self.submit_button = tk.Button(self.new_window, text="Save Changes", command=self.update_iterations)
         self.submit_button.pack()
 
     def update_iterations(self):
         global length
+        global learningmodel
+        global environment
 
         selected_model = self.model_list.item(self.model_list.selection())['text']
         
@@ -139,7 +140,17 @@ class MyApp:
             case "TD3":
                 learningmodel = "TD3"
 
+        selected_env = self.envi_list.item(self.envi_list.selection())['text']
+
+        match selected_env:
+            case "LunarLander-v2":
+                environment = "LunarLander-v2"
+            case "CartPole-v1":
+                environment = "CartPole-v1"
+
         if self.input_field.get():
+            message = "Please enter a number..."
+            self.display_message(message)
             length = (int(self.input_field.get()))
         
         message = "Iterations changed..."
@@ -147,6 +158,7 @@ class MyApp:
 
         self.iter_label.config(text=f"Current Iterations: {length}")
         self.model_label.config(text=f"Model Learning Method: {learningmodel}")
+        self.environment_label.config(text=f"Current Environment: {environment}")
 
         self.new_window.destroy()
 
@@ -154,7 +166,36 @@ class MyApp:
         message = "Rendering model..."
         self.display_message(message)
 
-        env = gym.make("LunarLander-v2", render_mode="rgb_array")
+        self.new_window = tk.Toplevel(self.master)
+        self.new_window.title("Select Model to render")
+        self.new_window.geometry("600x600")
+        self.new_window.grab_set()
+
+        self.modelrender_list = ttk.Treeview(self.new_window, columns=("Model Number", "Mean Reward", "Std Reward"))
+        self.modelrender_list.heading("#0", text="Model Number")
+        self.modelrender_list.heading("#1", text="Mean Reward")
+        self.modelrender_list.heading("#2", text="Std Reward")
+        self.modelrender_list.pack()
+
+        models_dir="testmodel"
+        for filename in os.listdir(models_dir):
+            if filename.endswith(".zip"):  # Assuming model files are saved as zip files
+                model_path = os.path.join(models_dir, filename)
+                try:
+                    model = PPO.load(model_path)
+                    env = gym.make({environment}, render_mode="rgb_array")
+
+                    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=2)
+                    self.modelrender_list.insert("", tk.END, text = filename, values = (round(mean_reward, 2), round(std_reward, 2)))
+                except Exception as e:
+                    message = f"Error loading model '{filename}': {e}"
+                    self.display_message(message)
+
+        self.render_button = tk.Button(self.new_window, text="Render Selected Model", command=self.render_selected_model)
+        self.render_button.pack()
+
+    def render_selected_model(self):
+        env = gym.make(str(environment), render_mode="rgb_array")
 
         model_path = f"testmodel/280000"
         model = PPO.load(model_path, env=env)
@@ -169,6 +210,8 @@ class MyApp:
             vec_env.render("human")
             
         vec_env.close()
+
+        self.new_window.destroy()
 
     def exit(self):
         message = "Exiting..."
