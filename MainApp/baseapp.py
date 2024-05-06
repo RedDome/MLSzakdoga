@@ -75,8 +75,8 @@ class MyApp:
         TIMESTEPS = 10000
         itera = length // TIMESTEPS
         for i in range(itera):
-            model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name="PPO")
-            model.save(f"{models_dir}/{TIMESTEPS*i}")
+            model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=str(learningmodel))
+            model.save(f"{models_dir}/{TIMESTEPS*(i+1)}")
 
     def list_models(self):
         message = "Listing models..."
