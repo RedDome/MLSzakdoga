@@ -83,6 +83,17 @@ class MyApp:
         self.display_message(message)
 
         # models_dir=f"models/{learningmodel}"
+
+        self.new_window = tk.Toplevel(self.master)
+        self.new_window.title("Trained Models")
+        self.new_window.geometry("600x600")
+        self.new_window.grab_set()
+
+        self.modelrender_list = ttk.Treeview(self.new_window, columns=("Model Number", "Mean Reward", "Std Reward"))
+        self.modelrender_list.heading("#0", text="Model Number")
+        self.modelrender_list.heading("#1", text="Mean Reward")
+        self.modelrender_list.heading("#2", text="Std Reward")
+        self.modelrender_list.pack()
         
         models_dir = "models/"
         for folder in os.listdir(models_dir):
@@ -107,8 +118,7 @@ class MyApp:
                             env = gym.make(str(environment), render_mode="rgb_array")
 
                             mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=2)
-                            message = f"Model full path: {model_path}, Mean Reward: {round(mean_reward, 2)}, Std Reward: {round(std_reward, 2)}"
-                            self.display_message(message)
+                            self.modelrender_list.insert("", tk.END, text = model_path, values = (round(mean_reward, 2), round(std_reward, 2)))
                         except Exception as e:
                             message = f"Error loading model '{filename}': {e}"
                             self.display_message(message)
@@ -203,19 +213,33 @@ class MyApp:
         self.modelrender_list.heading("#2", text="Std Reward")
         self.modelrender_list.pack()
 
-        models_dir="testmodel"
-        for filename in os.listdir(models_dir):
-            if filename.endswith(".zip"):  # Assuming model files are saved as zip files
-                model_path = os.path.join(models_dir, filename)
-                try:
-                    model = PPO.load(model_path)
-                    env = gym.make({environment}, render_mode="rgb_array")
+        models_dir = "models/"
+        for folder in os.listdir(models_dir):
+            folder_path = os.path.join(models_dir, folder)
+            if os.path.isdir(folder_path):
+                for filename in os.listdir(folder_path):
+                    if filename.endswith(".zip"):  # Assuming model files are saved as zip files
+                        model_path = os.path.join(folder_path, filename)
+                        try:
+                            match learningmodel:
+                                case "A2C":
+                                    model = A2C.load(model_path)
+                                case "PPO":
+                                    model = PPO.load(model_path)
+                                case "DQN":
+                                    model = DQN.load(model_path)
+                                case "SAC":
+                                    model = SAC.load(model_path)
+                                case "TD3":
+                                    model = TD3.load(model_path)
+                    
+                            env = gym.make(str(environment), render_mode="rgb_array")
 
-                    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=2)
-                    self.modelrender_list.insert("", tk.END, text = filename, values = (round(mean_reward, 2), round(std_reward, 2)))
-                except Exception as e:
-                    message = f"Error loading model '{filename}': {e}"
-                    self.display_message(message)
+                            mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=2)
+                            self.modelrender_list.insert("", tk.END, text = model_path, values = (round(mean_reward, 2), round(std_reward, 2)))
+                        except Exception as e:
+                            message = f"Error loading model '{filename}': {e}"
+                            self.display_message(message)
 
         self.render_button = tk.Button(self.new_window, text="Render Selected Model", command=self.render_selected_model)
         self.render_button.pack()
@@ -223,7 +247,8 @@ class MyApp:
     def render_selected_model(self):
         env = gym.make(str(environment), render_mode="rgb_array")
 
-        model_path = f"testmodel/280000"
+        # model_path = f"testmodel/280000"
+        model_path = self.modelrender_list.item(self.modelrender_list.selection())['text']
         model = PPO.load(model_path, env=env)
 
         mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
@@ -235,6 +260,7 @@ class MyApp:
             obs, rewards, dones, info = vec_env.step(action)
             vec_env.render("human")
             
+        # self.envs[0].close()    
         vec_env.close()
 
         self.new_window.destroy()
