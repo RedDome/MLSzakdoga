@@ -1,7 +1,4 @@
-import tkinter as tk
-from app.gui import MyApp
+from src.views.mainview import create_main_view
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = MyApp(root)
-    root.mainloop()
+    create_main_view()
