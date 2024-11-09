@@ -5,12 +5,17 @@ warnings.filterwarnings("ignore", category=UserWarning)
 import rospy
 import gym
 from stable_baselines3 import PPO
+from stable_baselines3.common.env_checker import check_env
+
 
 # Initialize the ROS node
 rospy.init_node('gym_gazebo_env', anonymous=True)
 
 
 env = CustomGazeboEnv()
+# It will check your custom environment and output additional warnings if needed
+# check_env(env)
+
 obs = env.reset()
 done = False
 while not done:
