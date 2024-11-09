@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start All ROS Processes",
+            "type": "shell",
+            "command": "bash /workspaces/MLSzakdoga/start_ros.sh",
+            "isBackground": true,
+            "env": {
+                "TURTLEBOT3_MODEL": "burger",
+                "ROS_PACKAGE_PATH": "/workspaces/MLSzakdoga/catkin_ws/src:/opt/ros/noetic/share",
+                "PYTHONPATH": "/workspaces/MLSzakdoga/catkin_ws/src:/opt/ros/noetic/lib/python3/dist-packages"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false
+            }
+        }
+    ]
+}

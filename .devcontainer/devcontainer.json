@@ -1,0 +1,32 @@
+{
+    "name": "agents",
+    "build": {
+        "context": "..",
+        "dockerfile": "../Dockerfile"
+    },
+    "workspaceFolder": "/workspaces/MLSzakdoga",
+    "runArgs": [
+        "--network",
+        "host",
+        "--env",
+        "PYTHONPATH=/workspaces/MLSzakdoga/src",
+        "--env",
+        "DISPLAY=${env:DISPLAY}",
+        "--volume",
+        "/tmp/.X11-unix:/tmp/.X11-unix:rw",
+        "--env",
+        "QT_X11_NO_MITSHM=1"
+    ],
+    "remoteEnv": {
+        "PYTHONPATH": "/workspaces/MLSzakdoga/src"
+    },
+    "forwardPorts": [3000],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode-remote.remote-containers"
+            ]
+        }
+    }
+}
+

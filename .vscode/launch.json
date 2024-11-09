@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: train.py",
+            "type": "python",
+            "request": "launch",
+            "program": "/workspaces/MLSzakdoga/src/train.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "/workspaces/MLSzakdoga/src:/opt/ros/noetic/lib/python3/dist-packages",
+                "ROS_PACKAGE_PATH": "/catkin_ws/src:/opt/ros/noetic/share",
+                "ROS_MASTER_URI": "http://localhost:11311",
+                "ROS_PYTHON_VERSION": "3",
+                "ROS_VERSION": "1",
+                "MPLBACKEND": "Agg"
+            },
+            "preLaunchTask": "Start All ROS Processes"
+        }
+    ]
+}

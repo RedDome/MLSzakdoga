@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="custom_world">
+    <physics type="ode">
+      <gravity>0 0 -9.8</gravity>
+    </physics>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://turtlebot3_burger</uri>
+    </include>
+    <model name="box1">
+      <static>true</static>
+      <link name="link">
+        <pose>2 2 0.5 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.0 0.0 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

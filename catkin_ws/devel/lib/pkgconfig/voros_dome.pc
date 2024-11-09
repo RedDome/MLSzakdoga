@@ -1,0 +1,8 @@
+prefix=/workspaces/MLSzakdoga/catkin_ws/devel
+
+Name: voros_dome
+Description: Description of voros_dome
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
