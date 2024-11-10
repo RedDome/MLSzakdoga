@@ -58,7 +58,7 @@ RUN chmod +x /workspaces/MLSzakdoga/setup_env.sh
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc && \
     echo "source /workspaces/MLSzakdoga/catkin_ws/devel/setup.bash" >> /root/.bashrc && \
     echo "export TURTLEBOT3_MODEL=burger" >> /root/.bashrc && \
-    echo "export ROS_MASTER_URI=http://localhost:11311" >> /root/.bashrc && \
+    echo "export ROS_MASTER_URI=http://\$(hostname -I | awk '{print \$1}'):11311" >> /root/.bashrc && \
     echo "export ROS_IP=\$(hostname -I | awk '{print \$1}')" >> /root/.bashrc && \
     echo "export DISPLAY=:0" >> /root/.bashrc
 

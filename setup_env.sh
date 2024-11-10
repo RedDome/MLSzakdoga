@@ -247,7 +247,7 @@ cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"
         </visual>
         <sensor name='hls_lfcd_lds' type='ray'>
           <always_on>1</always_on>
-          <visualize>0</visualize>
+          <visualize>1</visualize>
           <pose>-0.032 0 0.171 0 -0 0</pose>
           <update_rate>1800</update_rate>
           <ray>
@@ -432,104 +432,48 @@ cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"
           </limit>
         </axis>
       </joint>
+      <plugin name="turtlebot3_drive_controller" filename="libgazebo_ros_diff_drive.so">
+        <ros>
+          <namespace>/turtlebot3</namespace>
+          <remapping>cmd_vel:=/cmd_vel</remapping>
+          <remapping>odom:=/odom</remapping>
+        </ros>
+        <updateRate>50</updateRate>
+        <leftJoint>left_wheel_joint</leftJoint>
+        <rightJoint>right_wheel_joint</rightJoint>
+        <wheelSeparation>0.16</wheelSeparation>
+        <wheelDiameter>0.066</wheelDiameter>
+        <torque>5.0</torque>
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+        <useEncoders>true</useEncoders>
+        <publishTf>true</publishTf>
+      </plugin>
       <static>0</static>
     </model>
-    <model name='box1'>
+
+    <!-- Labirintus hozzáadása -->
+    <model name='maze_walls'>
       <static>1</static>
       <link name='link'>
-        <pose>2 2 0.5 0 -0 0</pose>
-        <collision name='collision'>
+        <!-- Első fal -->
+        <collision name='wall_1_collision'>
           <geometry>
             <box>
-              <size>1 1 1</size>
+              <size>6 0.2 1</size>
             </box>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
+          <pose>3 0 0.5 0 0 0</pose>
         </collision>
-        <visual name='visual'>
+        <visual name='wall_1_visual'>
           <geometry>
             <box>
-              <size>1 1 1</size>
+              <size>6 0.2 1</size>
             </box>
           </geometry>
-          <material>
-            <ambient>0.8 0 0 1</ambient>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-    </model>
-    <gravity>0 0 -9.8</gravity>
-    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-    <atmosphere type='adiabatic'/>
-    <scene>
-      <ambient>0.4 0.4 0.4 1</ambient>
-      <background>0.7 0.7 0.7 1</background>
-      <shadows>1</shadows>
-    </scene>
-    <wind/>
-    <spherical_coordinates>
-      <surface_model>EARTH_WGS84</surface_model>
-      <latitude_deg>0</latitude_deg>
-      <longitude_deg>0</longitude_deg>
-      <elevation>0</elevation>
-      <heading_deg>0</heading_deg>
-    </spherical_coordinates>
-    <model name='unit_box'>
-      <pose>-1.67576 -1.30188 0.5 0 -0 0</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.166667</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.166667</iyy>
-            <iyz>0</iyz>
-            <izz>0.166667</izz>
-          </inertia>
-          <pose>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>1 1 1</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>1 1 1</size>
-            </box>
-          </geometry>
+          <pose>3 0 0.5 0 0 0</pose>
           <material>
             <script>
               <name>Gazebo/Grey</name>
@@ -537,88 +481,57 @@ cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"
             </script>
           </material>
         </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
+
+        <!-- Második fal -->
+        <collision name='wall_2_collision'>
+          <geometry>
+            <box>
+              <size>0.2 4 1</size>
+            </box>
+          </geometry>
+          <pose>0 2 0.5 0 0 0</pose>
+        </collision>
+        <visual name='wall_2_visual'>
+          <geometry>
+            <box>
+              <size>0.2 4 1</size>
+            </box>
+          </geometry>
+          <pose>0 2 0.5 0 0 0</pose>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+
+        <!-- Harmadik fal -->
+        <collision name='wall_3_collision'>
+          <geometry>
+            <box>
+              <size>6 0.2 1</size>
+            </box>
+          </geometry>
+          <pose>-3 4 0.5 0 0 0</pose>
+        </collision>
+        <visual name='wall_3_visual'>
+          <geometry>
+            <box>
+              <size>6 0.2 1</size>
+            </box>
+          </geometry>
+          <pose>-3 4 0.5 0 0 0</pose>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
       </link>
     </model>
-    <include>
-      <uri>model://turtlebot3_burger</uri>
-    </include>
-    <state world_name='custom_world'>
-      <sim_time>118 795000000</sim_time>
-      <real_time>119 260344844</real_time>
-      <wall_time>1731132249 843635019</wall_time>
-      <iterations>118795</iterations>
-      <model name='box1'>
-        <pose>0 0 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>2 2 0.5 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='ground_plane'>
-        <pose>0 0 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>0 0 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='turtlebot3_burger'>
-        <pose>0.021239 -0.012728 0.010013 -0.000191 -0.012534 0.052565</pose>
-        <scale>1 1 1</scale>
-        <link name='base'>
-          <pose>0.021239 -0.012728 0.010013 -0.000191 -0.012534 0.052565</pose>
-          <velocity>0.000316 -0.000481 -0.001071 -0.024077 -0.010988 0.000722</velocity>
-          <acceleration>-1.32292 3.00737 -2.7809 -1.03028 -0.015716 2.20803</acceleration>
-          <wrench>-1.32292 3.00737 -2.7809 0 -0 0</wrench>
-        </link>
-        <link name='left_wheel'>
-          <pose>0.009032 0.146797 0.010063 -0.000802 0.012555 -3.04141</pose>
-          <velocity>6.8e-05 -0.000367 -0.005228 -0.023592 -0.009265 0.00088</velocity>
-          <acceleration>-0.382364 0.959008 -6.55522 3.08221 0.31868 -0.612802</acceleration>
-          <wrench>-0.038236 0.095901 -0.655522 0 -0 0</wrench>
-        </link>
-        <link name='lidar'>
-          <pose>0.021239 -0.012727 0.010013 -0.000189 -0.012539 0.052565</pose>
-          <velocity>0.000177 -0.000473 -0.001105 -0.023898 -0.009652 0.000809</velocity>
-          <acceleration>-3.17376 7.33979 -2.57974 2.46923 -0.454344 -0.759993</acceleration>
-          <wrench>-0.39672 0.917474 -0.322468 0 -0 0</wrench>
-        </link>
-        <link name='right_wheel'>
-          <pose>0.052765 -0.167764 0.010211 0.002271 0.012171 -2.7929</pose>
-          <velocity>-6e-06 0.000234 0.002889 -0.02196 -0.008701 0.000906</velocity>
-          <acceleration>-1.15904 1.99729 1.99645 0.062385 1.44696 -0.570637</acceleration>
-          <wrench>-0.115904 0.199729 0.199645 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='unit_box'>
-        <pose>-1.67576 -1.30188 0.5 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>-1.67576 -1.30188 0.5 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.004709 -9.78112 9.78158 0.712677 -0.009414 -4.3e-05</acceleration>
-          <wrench>-0.004709 -9.78112 9.78158 0 -0 0</wrench>
-        </link>
-      </model>
-      <light name='sun'>
-        <pose>0 0 10 0 -0 0</pose>
-      </light>
-    </state>
-    <gui fullscreen='0'>
-      <camera name='user_camera'>
-        <pose>5.63025 -4.46437 1.76346 0 0.275643 2.35619</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
-      </camera>
-    </gui>
+
   </world>
 </sdf>
 EOF
