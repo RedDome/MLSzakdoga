@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # Környezeti beállítások
-# Set ROS_MASTER_URI to default localhost
-export ROS_MASTER_URI=http://localhost:11311
-
-# Automatically detect and set ROS_IP to the machine's IP address
-export ROS_IP=$(hostname -I | awk '{print $1}')
+# Automatically detect and set both ROS_MASTER_URI and ROS_IP to the machine's IP address
+MACHINE_IP=$(hostname -I | awk '{print $1}')
+export ROS_MASTER_URI=http://$MACHINE_IP:11311
+export ROS_IP=$MACHINE_IP
 
 # start_ros.sh eleje
 source /opt/ros/noetic/setup.bash
