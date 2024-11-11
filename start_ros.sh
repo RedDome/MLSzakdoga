@@ -24,5 +24,6 @@ fi
 # Gazebo indítása a custom world fájllal
 echo "Starting Gazebo with custom world..."
 roslaunch -v voros_dome custom_world.launch  --screen
-
-rqt_graph
+#roslaunch -v turtlebot3_gazebo turtlebot3_house.launch --screen
+#roslaunch -v turtlebot3_gazebo turtlebot3_world.launch --screen
+#rqt_graph

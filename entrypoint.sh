@@ -17,6 +17,15 @@ export ROS_IP=$MACHINE_IP
 
 # Add a short delay to allow services to start
 sleep 10  # Adjust if necessary
+# Ellenőrizzük, hogy a ROS_MASTER_URI nincs-e foglalva, majd indítjuk a roscore-t
+if ! pgrep -x "roscore" > /dev/null
+then
+    echo "Starting roscore..."
+    roscore &
+    sleep 5  # Várunk, hogy a roscore teljesen elinduljon
+else
+    echo "roscore is already running."
+fi
 
 # Launch the custom Gazebo world with TurtleBot3
 roslaunch voros_dome custom_world.launch  --screen

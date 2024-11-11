@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     python3-tk \
     python3-catkin-tools \
     ros-noetic-turtlebot3-gazebo \
+    ros-noetic-turtlebot3-slam \
     ros-noetic-gazebo-ros \
     ros-noetic-gazebo-ros-pkgs \
     ros-noetic-gazebo-plugins \

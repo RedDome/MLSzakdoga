@@ -56,3 +56,12 @@ rosservice call /rosout/set_logger_level "{logger: 'rosout', level: 'debug'}"
 rosservice call /gazebo/set_logger_level "{logger: 'rosout', level: 'debug'}"
 rosservice call /gym_gazebo_env_1606_1731216704168/set_logger_level "{logger: 'rosout', level: 'debug'}"
 
+
+rosrun topic_tools relay /burger/scan /scan
+
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml
+
+roslaunch turtlebot3_slam turtlebot3_slam.launch
+
+
+

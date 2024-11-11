@@ -559,9 +559,9 @@ else
   </link>\
   <gazebo>\
     <plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">\
-      <robotNamespace>/</robotNamespace>\
+      <robotNamespace>/turtlebot3</robotNamespace>\
       <frameName>base_scan</frameName>\
-      <topicName>/scan</topicName>\
+      <topicName>/turtlebot3_burger/scan</topicName>\
     </plugin>\
     <plugin name="gazebo_ros_ultrasonic" filename="libgazebo_ros_range.so">\
       <robotNamespace>/</robotNamespace>\

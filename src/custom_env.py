@@ -1,148 +1,109 @@
 import gymnasium as gym
-from gymnasium import spaces
-import numpy as np
 import rospy
-from std_srvs.srv import Empty
-from std_msgs.msg import Float32, Bool
-from sensor_msgs.msg import LaserScan
-from geometry_msgs.msg import Twist, Pose
-import time
+import numpy as np
+from gymnasium import spaces
+from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+from std_srvs.srv import Empty
+from tf.transformations import euler_from_quaternion
 
 class CustomGazeboEnv(gym.Env):
-    def __init__(self):
+    def __init__(self, start_position=(0, 0), goal_position=(5, 5)):
         super(CustomGazeboEnv, self).__init__()
-
-        # Initialize ROS node
-        rospy.init_node('gym_gazebo_env', anonymous=True)
-
-        # Define action and observation space
-        self.action_space = spaces.Box(low=np.array([-0.5, -1.0]),
-                                       high=np.array([0.5, 1.0]),
-                                       dtype=np.float32)
-
-        self.observation_space = spaces.Box(low=0.0,
-                                            high=1.0,
-                                            shape=(180,),
-                                            dtype=np.float32)
-
-        # Publishers and Subscribers
-        self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=5)
-        self.scan_sub = rospy.Subscriber('/scan', LaserScan, self._scan_callback)
+        
+        # Start and goal positions
+        self.start_position = np.array(start_position, dtype=np.float32)
+        self.goal_position = np.array(goal_position, dtype=np.float32)
+        
+        # Publishers and subscribers
+        self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         self.odom_sub = rospy.Subscriber('/odom', Odometry, self._odom_callback)
-        self.reset_simulation_service = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
-        self.unpause_physics_client = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-        self.pause_physics_client = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-
-        self.scan_data = None
-        self.robot_position = None
-        self.previous_goal_distance = float('inf')
-
-        # Define goal position (x, y)
-        self.goal_position = np.array([5.0, 5.0])  # Default goal coordinates
-
-    def _scan_callback(self, data):
-        self.scan_data = data
+        
+        # Define action and observation space
+        self.action_space = spaces.Discrete(3)  # 0: Forward, 1: Left, 2: Right
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(4,), dtype=np.float32)
+        
+        # Initialize robot state
+        self.robot_position = np.array(self.start_position, dtype=np.float32)
+        self.robot_orientation = 0  # Orientation in radians
+        
+        # Service to reset the simulation
+        self.reset_simulation = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
 
     def _odom_callback(self, data):
-        # Update the robot's current position based on odometry data
-        self.robot_position = np.array([data.pose.pose.position.x, data.pose.pose.position.y])
+        """Callback function to update robot position and orientation from odometry data."""
+        self.robot_position = np.array([data.pose.pose.position.x, data.pose.pose.position.y], dtype=np.float32)
+        orientation_q = data.pose.pose.orientation
+        _, _, yaw = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
+        self.robot_orientation = yaw
 
-    def step(self, action):
-        rospy.loginfo(f"Step called with action: {action}")
-        vel_cmd = Twist()
-        vel_cmd.linear.x = action[0]
-        vel_cmd.angular.z = action[1]
-        self.cmd_vel_pub.publish(vel_cmd)
-
-        time.sleep(0.5)
-        observation = self.get_observation()
-        reward = self._compute_reward(observation, action)
-        done = self._is_done(observation)
-        info = {
-            'min_distance': np.min(observation)
-        }
-
-        return observation, reward, done, info
-
-    def reset(self, seed=None):
-        # Set the seed if provided
-        if seed is not None:
-            np.random.seed(seed)
-
-        # Reset the simulation
-        self.reset_simulation_service()
-        time.sleep(0.5)  # Give the simulation some time to stabilize
-        self.wait_for_time_to_progress()
-
-        # Set a new goal position
-        self.set_goal_position()
-
-        # Obtain the initial observation
-        observation = self.get_observation()
-        self.previous_goal_distance = self._compute_goal_distance()
-        return observation
-
-    def set_goal_position(self, x=None, y=None):
-        # Set a new goal position, either random or specified
-        if x is None or y is None:
-            self.goal_position = np.array([np.random.uniform(-5.0, 5.0), np.random.uniform(-5.0, 5.0)])
-        else:
-            self.goal_position = np.array([x, y])
-
-    def wait_for_time_to_progress(self):
-        current_time = rospy.Time.now()
-        while rospy.Time.now() == current_time:
-            time.sleep(0.01)
-
-    def render(self, mode='human'):
-        pass
-
-    def close(self):
-        rospy.signal_shutdown('Shutting down environment')
-
-    def get_observation(self):
-        while self.scan_data is None and not rospy.is_shutdown():
-            rospy.sleep(0.1)
-        scan_ranges = np.array(self.scan_data.ranges)
-        scan_ranges[scan_ranges == np.inf] = self.scan_data.range_max
-        reduced_ranges = scan_ranges[::2]  # Reduce to 180 readings for simplicity
-        normalized_ranges = reduced_ranges / self.scan_data.range_max
-        return normalized_ranges
-
-    def _compute_goal_distance(self):
-        # Compute distance from TurtleBot to the goal position
-        if self.robot_position is None:
-            return float('inf')  # If no position data yet, return a large distance
-        return np.linalg.norm(self.goal_position - self.robot_position)
-
-    def _compute_reward(self, observation, action):
-        min_distance = np.min(observation)
-        collision_threshold = 0.2
-        goal_distance = self._compute_goal_distance()
-
-        # Büntetés ütközésért
-        if min_distance < collision_threshold:
-            reward = -100
-        # Jutalom, ha közeledik a célhoz
-        elif goal_distance < self.previous_goal_distance:
-            reward = 10
-        # Büntetés, ha távolodik a célponttól
-        else:
-            reward = -1
+    def reset(self, seed=None, options=None):
+        """Reset the environment to the starting position."""
+        super().reset(seed=seed)
+        try:
+            self.reset_simulation()  # Reset Gazebo simulation
+            rospy.sleep(1)  # Give Gazebo some time to reset
+        except rospy.exceptions.ROSInterruptException:
+            pass
         
-        # Előrehaladásért is adunk jutalmat, ha ütközés nem történt
-        reward += action[0] * 2.0
-        self.previous_goal_distance = goal_distance
+        # Reset internal state
+        self.robot_position = np.array(self.start_position, dtype=np.float32)
+        self.robot_orientation = 0
+        obs = self._get_obs()
+        return obs, {}
 
+    def _get_obs(self):
+        """Get the current observation, such as position and orientation."""
+        distance_to_goal = np.linalg.norm(self.goal_position - self.robot_position).astype(np.float32)
+        angle_to_goal = np.arctan2(self.goal_position[1] - self.robot_position[1], self.goal_position[0] - self.robot_position[0]).astype(np.float32)
+        return np.array([self.robot_position[0], self.robot_position[1], distance_to_goal, angle_to_goal], dtype=np.float32)
+
+    def reward_function(self):
+        """Calculate reward based on the distance to the goal."""
+        distance_to_goal = np.linalg.norm(self.goal_position - self.robot_position)
+        
+        # Positive reward for getting closer, high reward for reaching the goal
+        if distance_to_goal < 0.1:  # Within 10 cm of the goal
+            reward = 100.0  # Large reward for reaching goal
+        else:
+            reward = -float(distance_to_goal)  # Negative reward based on distance to goal
+        
         return reward
 
-    def _is_done(self, observation):
-        min_distance = np.min(observation)
-        collision_threshold = 0.2
+    def step(self, action):
+        """Take a step in the environment based on the action chosen."""
+        vel_msg = Twist()
+        if action == 0:  # Forward
+            vel_msg.linear.x = 0.2
+            vel_msg.angular.z = 0.0
+        elif action == 1:  # Left turn
+            vel_msg.linear.x = 0.0
+            vel_msg.angular.z = 0.3
+        elif action == 2:  # Right turn
+            vel_msg.linear.x = 0.0
+            vel_msg.angular.z = -0.3
+        
+        # Publish velocity command
+        self.cmd_vel_pub.publish(vel_msg)
+        try:
+            rospy.sleep(0.1)  # Wait for a short duration to simulate the action
+        except rospy.exceptions.ROSInterruptException:
+            pass
+        
+        # Get new observation and reward
+        obs = self._get_obs()
+        reward = self.reward_function()
+        
+        # Check if goal is reached
+        terminated = np.linalg.norm(self.goal_position - self.robot_position) < 0.1
+        done = bool(terminated)
+        
+        return obs, float(reward), done, False, {}
 
-        # Done if collision occurs or if the goal is reached
-        goal_reached_threshold = 0.5  # If the robot is within 0.5 meters of the goal
-        goal_distance = self._compute_goal_distance()
+    def close(self):
+        """Clean up ROS-related resources."""
+        rospy.signal_shutdown('Environment closed.')
 
-        return min_distance < collision_threshold or goal_distance < goal_reached_threshold
+    def set_goal_position(self, x, y):
+        """Set a new goal position for the robot."""
+        self.goal_position = np.array([x, y], dtype=np.float32)
