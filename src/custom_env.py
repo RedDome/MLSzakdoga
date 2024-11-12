@@ -69,14 +69,20 @@ class CustomGazeboEnv(gym.Env):
         return np.array([self.robot_position[0], self.robot_position[1], distance_to_goal, angle_to_goal, laser_min_distance], dtype=np.float32)
 
     def reward_function(self):
-        """Calculate reward based on the distance to the goal."""
+        """Calculate reward based on the distance to the goal and obstacle avoidance."""
         distance_to_goal = np.linalg.norm(self.goal_position - self.robot_position)
-        
-        # Positive reward for getting closer, high reward for reaching the goal
+
+        # Reward for getting closer to the goal
         if distance_to_goal < 0.1:  # Within 10 cm of the goal
             reward = 100.0  # Large reward for reaching goal
         else:
             reward = -float(distance_to_goal)  # Negative reward based on distance to goal
+        
+        # Penalty for being too close to obstacles
+        if self.laser_data is not None:
+            min_distance = np.min(self.laser_data)
+            if min_distance < 0.5:  # Threshold for obstacle penalty (e.g., 0.5 meters)
+                reward -= 10 * (0.5 - min_distance)  # Higher penalty the closer it is to an obstacle
         
         return reward
 

@@ -14,20 +14,22 @@ rospy.init_node('gym_gazebo_env', anonymous=True)
 # Create the environment
 env = CustomGazeboEnv()
 
-# Set a custom goal position
-env.set_goal_position(x=3.0, y=3.0)
-
 # It will check your custom environment and output additional warnings if needed
 check_env(env)
 
 # Reset the environment before training
 obs = env.reset()
 
+
+# Set a custom goal position
+env.set_goal_position(x=2.0, y=1.0)
+
+
 # Initialize the agent with fine-tuned parameters
-model = PPO('MlpPolicy', env, verbose=2, n_steps=2048, batch_size=64, ent_coef=0.01, learning_rate=0.0003)
+model = PPO('MlpPolicy', env, verbose=2, n_steps=2048, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log='./tb_log')
 
 # Train the agent
-model.learn(total_timesteps=10000)
+model.learn(total_timesteps=10000,tb_log_name='vd')
 
 # Save the trained model
 model.save("ppo_gazebo_model")

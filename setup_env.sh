@@ -39,6 +39,7 @@ cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/launch/custom_world.launch"
   <arg name="world_name" default="$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"/>
   <include file="/opt/ros/noetic/share/gazebo_ros/launch/empty_world.launch">
     <arg name="world_name" value="\$(arg world_name)"/>
+    <arg name="debug" default="false"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
   </include>
