@@ -90,14 +90,14 @@ class CustomGazeboEnv(gym.Env):
         """Take a step in the environment based on the action chosen."""
         vel_msg = Twist()
         if action == 0:  # Forward
-            vel_msg.linear.x = 0.2
+            vel_msg.linear.x = 0.2 #2. gyorsabb
             vel_msg.angular.z = 0.0
         elif action == 1:  # Left turn
             vel_msg.linear.x = 0.0
-            vel_msg.angular.z = 0.3
+            vel_msg.angular.z = 0.3 #3. gyorsabb
         elif action == 2:  # Right turn
             vel_msg.linear.x = 0.0
-            vel_msg.angular.z = -0.3
+            vel_msg.angular.z = -0.3 #3. gyorsabb
         
         # Publish velocity command
         self.cmd_vel_pub.publish(vel_msg)

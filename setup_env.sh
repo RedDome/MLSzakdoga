@@ -52,7 +52,7 @@ if [[ ! -f "$CATKIN_WS_DIR/src/voros_dome/launch/custom_world.launch" ]]; then
   exit 1
 fi
 
-echo "5. A custom SDF world fájl létrehozása TurtleBot3 modellel és további akadályokkal"
+echo "5. A custom SDF world fájl létrehozása TurtleBot3 modellel "
 cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"
 <sdf version='1.7'>
   <world name='custom_world'>
@@ -426,7 +426,7 @@ cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"
         <child>lidar</child>
         <pose>-0.032 0 0.171 0 -0 0</pose>
         <axis>
-          <xyz expressed_in='__model__'>0 0 1</xyz>
+          <xyz expressed_in='_model_'>0 0 1</xyz>
           <limit>
             <lower>-1e+16</lower>
             <upper>1e+16</upper>
@@ -454,85 +454,75 @@ cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"
       </plugin>
       <static>0</static>
     </model>
+EOF
 
-    <!-- Labirintus hozzáadása -->
-    <model name='maze_walls'>
-      <static>1</static>
-      <link name='link'>
-        <!-- Első fal -->
-        <collision name='wall_1_collision'>
-          <geometry>
-            <box>
-              <size>6 0.2 1</size>
-            </box>
-          </geometry>
-          <pose>3 0 0.5 0 0 0</pose>
-        </collision>
-        <visual name='wall_1_visual'>
-          <geometry>
-            <box>
-              <size>6 0.2 1</size>
-            </box>
-          </geometry>
-          <pose>3 0 0.5 0 0 0</pose>
-          <material>
-            <script>
-              <name>Gazebo/Grey</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
+echo "5.a A custom SDF world fájl kibővítése az akadályokkal"
+cat <<EOF >> "$CATKIN_WS_DIR/src/voros_dome/worlds/custom_world.sdf"
+    <!-- Load model --> 
+    <include>
+      <uri>model://turtlebot3_plaza</uri>
+    </include>
 
-        <!-- Második fal -->
-        <collision name='wall_2_collision'>
+   
+    <model name="obstacle_1">
+      <pose>2 2 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
           <geometry>
-            <box>
-              <size>0.2 4 1</size>
-            </box>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.25</length>
+            </cylinder>
           </geometry>
-          <pose>0 2 0.5 0 0 0</pose>
         </collision>
-        <visual name='wall_2_visual'>
-          <geometry>
-            <box>
-              <size>0.2 4 1</size>
-            </box>
-          </geometry>
-          <pose>0 2 0.5 0 0 0</pose>
-          <material>
-            <script>
-              <name>Gazebo/Grey</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
 
-        <!-- Harmadik fal -->
-        <collision name='wall_3_collision'>
+        <visual name="visual">
           <geometry>
-            <box>
-              <size>6 0.2 1</size>
-            </box>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.25</length>
+            </cylinder>
           </geometry>
-          <pose>-3 4 0.5 0 0 0</pose>
-        </collision>
-        <visual name='wall_3_visual'>
-          <geometry>
-            <box>
-              <size>6 0.2 1</size>
-            </box>
-          </geometry>
-          <pose>-3 4 0.5 0 0 0</pose>
-          <material>
-            <script>
-              <name>Gazebo/Grey</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
         </visual>
       </link>
-    </model>
+    </model>        
 
+    <model name="obstacle_2">
+      <pose>-2 -2 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.25</length>
+            </cylinder>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.25</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_2" filename="libobstacle_2.so"/>
+    </model>  
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>0.0 0.0 17.0 0 1.5708 0</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
   </world>
 </sdf>
 EOF
