@@ -1,0 +1,1 @@
+gui implementálása (domekornyezet branch)
