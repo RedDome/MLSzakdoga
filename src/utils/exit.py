@@ -1,5 +1,5 @@
-from utils.logmessage import log_info
+import logging
 
 def exit_app(self):
-    log_info("Exiting program!")
+    logging.info("Exiting program!")
     self.quit()

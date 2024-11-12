@@ -6,12 +6,12 @@ from stable_baselines3.common import base_class
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.callbacks import EvalCallback
 from utils.shared import length, learningmodel, environment
-from utils.logmessage import log_info, log_error
+import logging
 import tkinter as tk
 import rospy
 
 def listModels(self):
-    log_info("Model Listing started!")
+    logging.info("Model Listing started!")
     rospy.init_node('gym_gazebo_env', anonymous=True)
 
     models_dir = "resources/models/"
@@ -21,8 +21,8 @@ def listModels(self):
             for filename in os.listdir(folder_path):
                 if filename.endswith(".zip"):  # Assuming model files are saved as zip files
                     model_path = os.path.join(folder_path, filename)
-                    log_info("model found at :" + model_path)
-                    log_info("Learning Model is: " + learningmodel)
+                    logging.info("model found at :" + model_path)
+                    logging.info("Learning Model is: " + learningmodel)
                     if learningmodel == "A2C":
                         model = A2C.load(model_path)
                     elif learningmodel == "PPO":
@@ -44,7 +44,7 @@ def listModels(self):
                         self.modelrender_list.insert("", tk.END, text = model_path, values = (round(mean_reward, 2), round(std_reward, 2)))
                     except Exception as e:
                         message = f"Error loading model '{filename}': {e}"
-                        log_error(message)
-            log_info("Models loaded")
+                        logging.error(message)
+            logging.info("Models loaded")
 
-    log_info("Model Listing ended!")
+    logging.info("Model Listing ended!")

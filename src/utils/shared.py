@@ -1,16 +1,16 @@
 # shared values across files
-from utils.logmessage import log_info
+import logging
 
 length = 10000
 learningmodel = "PPO"
 environment = "LunarLander-v2"
 
 def printvalues():
-    log_info("shared::printvalues Started!")
-    log_info("length: " + str(length))
-    log_info("length: " + learningmodel)
-    log_info("length: " + environment)
-    log_info("shared::printvalues Ended!")
+    logging.info("shared::printvalues Started!")
+    logging.info("length: " + str(length))
+    logging.info("length: " + learningmodel)
+    logging.info("length: " + environment)
+    logging.info("shared::printvalues Ended!")
 
 def setLength(newValue):
     global length
