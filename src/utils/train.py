@@ -3,10 +3,9 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
 import rospy
-import gym
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
-from utils.shared import learningmodel, length
+from utils.shared import learningmodel, length, xgoal, ygoal
 import logging
 import os
 
@@ -28,7 +27,8 @@ def train():
 
     obs = env.reset()
 
-    env.set_goal_position(x=2.0, y=1.0)
+    # env.set_goal_position(x=2.0, y=1.0)
+    env.set_goal_position(xgoal, ygoal)
 
     TIMESTEPS = 1000
     itera = length // TIMESTEPS

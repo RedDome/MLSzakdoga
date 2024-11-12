@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 from utils.changevalues import update_iterations
 
 class ChangeIterationsView:
@@ -20,13 +20,6 @@ class ChangeIterationsView:
         self.model_list.insert("", tk.END, text="DQN", values="test")
         self.model_list.insert("", tk.END, text="SAC", values="test")
         self.model_list.insert("", tk.END, text="TD3", values="test")
-
-        self.envi_list = ttk.Treeview(self.new_window, columns=("Environment Name", "Description"))
-        self.envi_list.heading("#0", text="Environment Name")
-        self.envi_list.heading("#1", text="Description")
-        self.envi_list.pack()
-        self.envi_list.insert("", tk.END, text="LunarLander-v2", values="test")
-        self.envi_list.insert("", tk.END, text="CartPole-v1", values="test")
 
         self.change_iter_label = tk.Label(self.new_window, text=f"Current Iterations: {self.current_iterations}, change below:")
         self.change_iter_label.pack()

@@ -1,11 +1,8 @@
 import os
-import gymnasium as gym
 from custom_env import CustomGazeboEnv
 from stable_baselines3 import A2C, PPO, DQN, SAC, TD3
-from stable_baselines3.common import base_class
 from stable_baselines3.common.evaluation import evaluate_policy
-from stable_baselines3.common.callbacks import EvalCallback
-from utils.shared import length, learningmodel, environment
+from utils.shared import learningmodel
 import logging
 import tkinter as tk
 import rospy

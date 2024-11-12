@@ -3,13 +3,14 @@ import logging
 
 length = 10000
 learningmodel = "PPO"
-environment = "LunarLander-v2"
+xgoal = 2.0
+ygoal = 1.0
 
 def printvalues():
     logging.info("shared::printvalues Started!")
     logging.info("length: " + str(length))
-    logging.info("length: " + learningmodel)
-    logging.info("length: " + environment)
+    logging.info("learningmodel: " + learningmodel)
+    logging.info("x goal value: " + xgoal + " y goal value: " + ygoal)
     logging.info("shared::printvalues Ended!")
 
 def setLength(newValue):
@@ -20,6 +21,10 @@ def setLearningModel(newValue):
     global learningmodel
     learningmodel = newValue
 
-def setEnvironment(newValue):
-    global environment
-    environment = newValue
+def setXGoal(newValue):
+    global xgoal
+    xgoal = newValue
+
+def setYGoal(newValue):
+    global ygoal
+    ygoal = newValue

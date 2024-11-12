@@ -1,4 +1,4 @@
-from utils.shared import length, learningmodel, environment, printvalues, setLearningModel, setEnvironment, setLength
+from utils.shared import length, learningmodel, printvalues, setLearningModel, setLength
 import logging
 
 def update_iterations(self):
@@ -20,15 +20,6 @@ def update_iterations(self):
             raise ValueError(f"Unknown learning model: {learningmodel}")
 
         logging.info("Selected learningmodel: " + learningmodel)
-
-        selected_env = self.envi_list.item(self.envi_list.selection())['text']
-
-        if selected_env == "LunarLander-v2":
-            setEnvironment("LunarLander-v2")
-        elif selected_env == "CartPole-v1":
-            setEnvironment("CartPole-v1")
-
-        logging.info("Selected environment: " + environment)
 
         if self.input_field.get():
             message = "Please enter a number..."
