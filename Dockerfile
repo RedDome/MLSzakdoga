@@ -68,6 +68,9 @@ RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc && \
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+COPY setup_env.sh /setup_env.sh
+RUN chmod +x /setup_env.sh
+
 # Set the working directory
 WORKDIR /workspaces/MLSzakdoga/catkin_ws
 
