@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: train.py",
+            "name": "Python: main.py",
             "type": "python",
             "request": "launch",
-            "program": "/workspaces/MLSzakdoga/src/train.py",
+            "program": "/workspaces/MLSzakdoga/src/main.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "/workspaces/MLSzakdoga/src:/opt/ros/noetic/lib/python3/dist-packages",

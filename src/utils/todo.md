@@ -1,1 +1,0 @@
-train átmásolása, többi domekornyezet branch fájl átmásolása
