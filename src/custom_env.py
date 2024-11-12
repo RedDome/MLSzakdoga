@@ -4,6 +4,7 @@ import numpy as np
 from gymnasium import spaces
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+from sensor_msgs.msg import LaserScan
 from std_srvs.srv import Empty
 from tf.transformations import euler_from_quaternion
 
@@ -16,12 +17,13 @@ class CustomGazeboEnv(gym.Env):
         self.goal_position = np.array(goal_position, dtype=np.float32)
         
         # Publishers and subscribers
-        self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
-        self.odom_sub = rospy.Subscriber('/odom', Odometry, self._odom_callback)
+        self.cmd_vel_pub = rospy.Publisher('/turtlebot3_burger/cmd_vel', Twist, queue_size=10)
+        self.odom_sub = rospy.Subscriber('/turtlebot3_burger/odom', Odometry, self._odom_callback)
+        self.laser_sub = rospy.Subscriber('/turtlebot3_burger/scan', LaserScan, self._laser_callback)
         
         # Define action and observation space
         self.action_space = spaces.Discrete(3)  # 0: Forward, 1: Left, 2: Right
-        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(4,), dtype=np.float32)
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(5,), dtype=np.float32)
         
         # Initialize robot state
         self.robot_position = np.array(self.start_position, dtype=np.float32)
@@ -36,6 +38,12 @@ class CustomGazeboEnv(gym.Env):
         orientation_q = data.pose.pose.orientation
         _, _, yaw = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
         self.robot_orientation = yaw
+        print("o:",self.robot_position)
+
+    def _laser_callback(self, data):
+        """Callback function to update laser scan data."""
+        self.laser_data = np.array(data.ranges, dtype=np.float32)
+        print("s:", self.laser_data)
 
     def reset(self, seed=None, options=None):
         """Reset the environment to the starting position."""
@@ -49,14 +57,16 @@ class CustomGazeboEnv(gym.Env):
         # Reset internal state
         self.robot_position = np.array(self.start_position, dtype=np.float32)
         self.robot_orientation = 0
+        self.laser_data = np.zeros(1, dtype=np.float32)  # Reset laser data
         obs = self._get_obs()
         return obs, {}
 
     def _get_obs(self):
-        """Get the current observation, such as position and orientation."""
+        """Get the current observation, including position, orientation, and laser data."""
         distance_to_goal = np.linalg.norm(self.goal_position - self.robot_position).astype(np.float32)
         angle_to_goal = np.arctan2(self.goal_position[1] - self.robot_position[1], self.goal_position[0] - self.robot_position[0]).astype(np.float32)
-        return np.array([self.robot_position[0], self.robot_position[1], distance_to_goal, angle_to_goal], dtype=np.float32)
+        laser_min_distance = np.min(self.laser_data).astype(np.float32)  # Minimum distance from obstacles
+        return np.array([self.robot_position[0], self.robot_position[1], distance_to_goal, angle_to_goal, laser_min_distance], dtype=np.float32)
 
     def reward_function(self):
         """Calculate reward based on the distance to the goal."""
