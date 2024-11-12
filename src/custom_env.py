@@ -38,7 +38,7 @@ class CustomGazeboEnv(gym.Env):
         orientation_q = data.pose.pose.orientation
         _, _, yaw = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
         self.robot_orientation = yaw
-        print("o:",self.robot_position)
+        # print("o:",self.robot_position)
 
     def _laser_callback(self, data):
         """Callback function to update laser scan data."""

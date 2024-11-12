@@ -38,6 +38,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install --default-timeout=100 stable-baselines3[extra]
 RUN pip3 install --default-timeout=100 gym
 RUN pip3 install --default-timeout=100 catkin_pkg empy rospkg
+RUN pip3 install --default-timeout=600 tensorflow
 
 # Create catkin workspace and clone repositories
 RUN mkdir -p /workspaces/MLSzakdoga/catkin_ws/src
