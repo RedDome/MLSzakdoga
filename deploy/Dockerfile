@@ -23,8 +23,7 @@ RUN pip3 install --default-timeout=100 tensorflow
 
 # ROS workspace setup
 WORKDIR /workspaces/MLSzakdoga/catkin_ws
-RUN ls -l /workspaces/MLSzakdoga/catkin_ws
-RUN catkin_make
+COPY ./catkin_ws /workspaces/MLSzakdoga/catkin_ws
 
 # Set up the environment for ROS and custom variables
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc && \
