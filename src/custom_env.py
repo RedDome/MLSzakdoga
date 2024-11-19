@@ -24,6 +24,8 @@ class CustomGazeboEnv(gym.Env):
         
         self.robot_position = np.array(self.start_position, dtype=np.float32)
         self.robot_orientation = 0  # Orientation in radians
+
+        self.laser_data = 10
         
         self.reset_simulation = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
 
@@ -61,6 +63,7 @@ class CustomGazeboEnv(gym.Env):
         angle_to_goal = np.arctan2(self.goal_position[1] - self.robot_position[1], self.goal_position[0] - self.robot_position[0]).astype(np.float32)
         laser_min_distance = np.min(self.laser_data).astype(np.float32)
         return np.array([self.robot_position[0], self.robot_position[1], distance_to_goal, angle_to_goal, laser_min_distance], dtype=np.float32)
+        # return np.array([self.robot_position[0], self.robot_position[1], distance_to_goal, angle_to_goal], dtype=np.float32)
 
     def reward_function(self):
         """Calculate reward based on the distance to the goal and obstacle avoidance."""
@@ -73,15 +76,16 @@ class CustomGazeboEnv(gym.Env):
             reward = -float(distance_to_goal)  # Negative reward based on distance to goal
         
         # Penalty for being too close to obstacles
-        if self.laser_data is not None:
-            min_distance = np.min(self.laser_data)
-            if min_distance < 0.5:
-                reward -= 10 * (0.5 - min_distance)  # Higher penalty the closer it is to an obstacle
+        # if self.laser_data is not None:
+        #    min_distance = np.min(self.laser_data)
+        #    if min_distance < 0.5:
+        #        reward -= 10 * (0.5 - min_distance)  # Higher penalty the closer it is to an obstacle
         
         return reward
 
     def step(self, action):
         """Take a step in the environment based on the action chosen."""
+
         vel_msg = Twist()
         if action == 0:  # Forward
             vel_msg.linear.x = 0.2 # 2. gyorsabb
