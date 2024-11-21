@@ -7,7 +7,6 @@ from stable_baselines3.common.env_checker import check_env
 import numpy as np
 from nav_msgs.msg import Odometry
 
-# --- Unit Test Class ---
 class CustomEnvironmentTest(unittest.TestCase):
     env = None
 
@@ -35,7 +34,6 @@ class CustomEnvironmentTest(unittest.TestCase):
         self.assertEqual(self.env.robot_orientation, 0)
 
     def test_ChangeGoalPosition(self):
-        warnings.simplefilter('ignore', category=ResourceWarning)
         print("test_ChangeGoalPositionTest started")
         new_goal_position = (10, 10)
         self.env.set_goal_position(*new_goal_position)
@@ -43,7 +41,7 @@ class CustomEnvironmentTest(unittest.TestCase):
         self.assertEqual(self.env.goal_position.tolist(), [10, 10])
     
     def test_ResetEnv(self):
-        print("test_ChangeGoalPositionTest started")
+        print("test_ResetEnv started")
         self.assertEqual(self.env.goal_position.tolist(), [5, 5])
 
         self.env.reset()
@@ -53,7 +51,7 @@ class CustomEnvironmentTest(unittest.TestCase):
         self.assertEqual(self.env.laser_data.tolist(), [0.0])
 
     def test_Reward(self):
-        """Test if the environment correctly identifies when the goal is reached."""
+        print("test_Reward started")
         self.env.goal_position = np.array([0, 0], dtype=np.float32)
 
         action = 0
@@ -63,6 +61,7 @@ class CustomEnvironmentTest(unittest.TestCase):
         self.assertEqual(reward, 100.0)
 
     def test_Odom(self):
+        print("test_Odom started")
         self.robot_position = [0,0]
         self.odom_sub = rospy.Subscriber('/turtlebot3_burger/odom', Odometry, self._odom_callback)
         time.sleep(0.5)
@@ -73,6 +72,5 @@ class CustomEnvironmentTest(unittest.TestCase):
     def test_close(self):
         self.env.close()   
 
-# --- Run Tests ---
 if __name__ == "__main__":
     unittest.main()
