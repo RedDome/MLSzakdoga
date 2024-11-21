@@ -29,7 +29,6 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/* 
 
-# Alapértelmezett Python beállítása
 RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 RUN git config --global http.postBuffer 104857600
@@ -42,9 +41,6 @@ RUN pip3 install --upgrade setuptools
 RUN pip3 install --default-timeout=600 stable-baselines3[extra]
 RUN pip3 install --default-timeout=600 gym
 RUN pip3 install --default-timeout=600 tensorflow
-
-# Felesleges pip telepítések eltávolítása
-# RUN pip3 install --default-timeout=600 catkin_pkg empy rospkg
 
 RUN if [ -d "/workspaces/MLSzakdoga/catkin_ws/src" ]; then rm -Rf /workspaces/MLSzakdoga/catkin_ws/src; fi
 RUN mkdir -p /workspaces/MLSzakdoga/catkin_ws/src
