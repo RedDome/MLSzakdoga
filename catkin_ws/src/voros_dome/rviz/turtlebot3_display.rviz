@@ -1,0 +1,17 @@
+Panels:
+  - Class: rviz/Displays
+Displays:
+  - Name: Robot Model
+    Class: rviz/RobotModel
+  - Name: LaserScan
+    Class: rviz/LaserScan
+    Topic: /scan
+    Size (m): 0.1
+  - Name: Ultrasonic
+    Class: rviz/LaserScan
+    Topic: /ultrasonic_scan
+    Size (m): 0.1
+  - Name: Infrared
+    Class: rviz/LaserScan
+    Topic: /infrared_scan
+    Size (m): 0.1

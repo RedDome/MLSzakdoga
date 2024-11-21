@@ -1,0 +1,3 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d /workspaces/MLSzakdoga/catkin_ws/src/voros_dome/rviz/turtlebot3_display.rviz" />
+</launch>
