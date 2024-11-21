@@ -1,4 +1,4 @@
-from gui.mainview import create_main_view
+from gui.mainview import createMainGUI
 
 import logging
 
@@ -9,4 +9,4 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 ])
 
 if __name__ == "__main__":
-    create_main_view()
+    createMainGUI()

@@ -1,4 +1,4 @@
-from custom_env import CustomGazeboEnv
+from env.custom_env import CustomGazeboEnv
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 

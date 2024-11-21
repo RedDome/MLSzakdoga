@@ -2,12 +2,10 @@ import unittest
 import rospy
 import time
 import warnings
-from custom_env import CustomGazeboEnv
+from env.custom_env import CustomGazeboEnv
 from stable_baselines3.common.env_checker import check_env
 import numpy as np
 from nav_msgs.msg import Odometry
-
-warnings.simplefilter("ignore", category=ResourceWarning)
 
 # --- Unit Test Class ---
 class CustomEnvironmentTest(unittest.TestCase):
@@ -18,12 +16,13 @@ class CustomEnvironmentTest(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
+        warnings.simplefilter('ignore', category=ResourceWarning)
         rospy.init_node('gym_gazebo_env', anonymous=True)
         cls.env = CustomGazeboEnv()
 
     def tearDown(self):
         print("Shutting down ROS environment...")
-        self.env.close()
+        # self.env.close()
 
     def test_CheckEnv(self):
         print("test_CheckEnv started")
@@ -36,6 +35,7 @@ class CustomEnvironmentTest(unittest.TestCase):
         self.assertEqual(self.env.robot_orientation, 0)
 
     def test_ChangeGoalPosition(self):
+        warnings.simplefilter('ignore', category=ResourceWarning)
         print("test_ChangeGoalPositionTest started")
         new_goal_position = (10, 10)
         self.env.set_goal_position(*new_goal_position)
