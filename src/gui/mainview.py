@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from gui.changeiterationsview import ChangeIterationsView
-from gui.listmodelsview import modelSimulateView, giveSimulateButton, giveResumeButton
+from gui.listmodelsview import modelSimulateView, modelContinueView
 from utils.train import train
 
 def trainNewModel():
@@ -12,7 +12,7 @@ def simulateModel():
     # giveSimulateButton(root.master)
 
 def continueTraining():
-    modelSimulateView(root)
+    modelContinueView(root)
     # giveResumeButton(root.master)
 
 def exit():
@@ -22,7 +22,7 @@ def createMainGUI():
     global root
     root = tk.Tk()
     root.title("Gazebo robotszimuláció")
-    root.geometry("270x180")
+    root.geometry("200x180")
     root.resizable(False, False)
 
     train_button = tk.Button(root, text="Új Modell tanítása", command=trainNewModel)

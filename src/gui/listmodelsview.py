@@ -1,14 +1,17 @@
 import tkinter as tk
 from tkinter import ttk
 from utils.listmodels import listModels
+import time
+import logging
+from utils.continuetraining import continueTrainingGazebo
 
 def modelSimulateView(root):
     new_window = basicView(root)
     giveSimulateButton(new_window)
 
-def modelSimulateView(root):
+def modelContinueView(root):
     new_window = basicView(root)
-    giveResumeButton(new_window)
+    giveContinueButton(new_window)
 
 def basicView(root):
     new_window = tk.Toplevel(root)
@@ -18,23 +21,39 @@ def basicView(root):
 
     model_list = ttk.Treeview(new_window, columns=("Iterációszám"))
     model_list.heading("#0", text="Iterációszám")
-    model_list.pack()
+    model_list.heading("#1", text="Elérhetőség")
+    model_list.pack(expand=True, fill=tk.BOTH)
+
+    # root.withdraw()
+
+    # root.deiconify()
 
     listModels(model_list)
+
+    new_window.model_list = model_list
 
     return new_window
 
 def giveSimulateButton(window):
-    window.change_method_button = tk.Button(window, text="Modell Szimulálása", command=simulateTraining)
-    window.change_method_button.grid(row=1, column=0, pady=5, sticky="s")
+    window.change_method_button = tk.Button(window, text="Modell Szimulálása", command=lambda: simulateTraining(window))
+    window.change_method_button.pack(pady=5)
 
-def giveResumeButton(window):
-    window.change_method_button = tk.Button(window, text="Modell Folytatása", command=continueTraining)
-    window.change_method_button.grid(row=1, column=0, pady=5, sticky="s")
+def giveContinueButton(window):
+    window.change_method_button = tk.Button(window, text="Modell Folytatása", command=lambda: continueTraining(window))
+    window.change_method_button.pack(pady=5)
 
 
-def simulateTraining():
-    print("Simulating model...")
+def simulateTraining(window):
+    selected_item = window.model_list.item(window.model_list.selection())
+    model_number = selected_item['text']
+    model_path = selected_item['values'][0]
+    full_path = f"{model_path}/{model_number}"
+    logging.info("model_path " + full_path)
+    logging.info("Simulating model...")
+    continueTrainingGazebo(full_path)
 
-def continueTraining():
-    print("Continuing model training...")
+def continueTraining(window):
+    model_number = window.model_list.item(window.model_list.selection())['text']
+    model_path = window.model_list.item(window.model_list.selection())['values']
+    logging.info("model_path %s %s", model_number, model_path)
+    logging.info("Continuing model training...")

@@ -17,7 +17,7 @@ def listModels(self):
                 if filename.endswith(".zip"):  # Assuming model files are saved as zip files
                     model_path = os.path.join(folder_path, filename)
                     logging.info("model found at :" + model_path)
-                    self.insert("", tk.END, text = model_path)
+                    self.insert("", tk.END, text = filename, values = folder_path)
             logging.info("Models loaded")
 
     logging.info("Model Listing ended!")
