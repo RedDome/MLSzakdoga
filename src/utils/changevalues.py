@@ -1,4 +1,4 @@
-from utils.shared import length, learningmodel, printvalues, setLearningModel, setLength
+from utils.commonvalues import length, learningmodel, printvalues, setLearningModel, setLength
 import logging
 
 def update_iterations(self):

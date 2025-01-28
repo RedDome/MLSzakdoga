@@ -1,4 +1,5 @@
 import yaml
+from utils.commonvalues import setFunctionName, setLearningModel, setLength, setXGoal, setYGoal, printvalues
 
 def processConfigFile():
     with open('/workspaces/MLSzakdoga/config/LEARN_DEFAULT_CONFIG.yaml', 'r') as f:
@@ -13,3 +14,12 @@ def processConfigFile():
     }
 
     print(output)
+
+    printvalues()
+
+    setFunctionName(output["FunctionName"])
+    setXGoal(output["XGoalPosition"])
+    setYGoal(output["YGoalPosition"])
+    setLearningModel(output["LearningModel"])
+
+    printvalues()

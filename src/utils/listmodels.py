@@ -2,7 +2,7 @@ import os
 from env.custom_env import CustomGazeboEnv
 from stable_baselines3 import A2C, PPO, DQN, SAC, TD3
 from stable_baselines3.common.evaluation import evaluate_policy
-from utils.shared import learningmodel
+from utils.commonvalues import learningmodel
 import logging
 import tkinter as tk
 import rospy

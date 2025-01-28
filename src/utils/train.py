@@ -5,7 +5,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
-from utils.shared import learningmodel, length, xgoal, ygoal
+from utils.commonvalues import learningmodel, length, xgoal, ygoal
 import logging
 import os
 
