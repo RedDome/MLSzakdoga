@@ -1,5 +1,3 @@
-from gui.mainview import createMainGUI
-
 import logging
 import sys
 

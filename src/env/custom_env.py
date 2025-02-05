@@ -30,20 +30,15 @@ class CustomGazeboEnv(gym.Env):
         self.reset_simulation = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
 
     def _odom_callback(self, data):
-        """Callback function to update robot position and orientation from odometry data."""
         self.robot_position = np.array([data.pose.pose.position.x, data.pose.pose.position.y], dtype=np.float32)
         orientation_q = data.pose.pose.orientation
         _, _, yaw = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
         self.robot_orientation = yaw
-        # print("o:",self.robot_position)
 
     def _laser_callback(self, data):
-        """Callback function to update laser scan data."""
         self.laser_data = np.array(data.ranges, dtype=np.float32)
-        print("s:", self.laser_data)
 
     def reset(self, seed=None, options=None):
-        """Reset the environment to the starting position."""
         super().reset(seed=seed)
         try:
             self.reset_simulation()
@@ -66,37 +61,31 @@ class CustomGazeboEnv(gym.Env):
         # return np.array([self.robot_position[0], self.robot_position[1], distance_to_goal, angle_to_goal], dtype=np.float32)
 
     def reward_function(self):
-        """Calculate reward based on the distance to the goal and obstacle avoidance."""
         distance_to_goal = np.linalg.norm(self.goal_position - self.robot_position)
 
-        # Reward for getting closer to the goal
         if distance_to_goal < 0.1:
             reward = 100.0
         else:
-            reward = -float(distance_to_goal)  # Negative reward based on distance to goal
+            reward = -float(distance_to_goal)
         
-        # Penalty for being too close to obstacles
-        # if self.laser_data is not None:
-        #    min_distance = np.min(self.laser_data)
-        #    if min_distance < 0.5:
-        #        reward -= 10 * (0.5 - min_distance)  # Higher penalty the closer it is to an obstacle
+        if self.laser_data is not None:
+            min_distance = np.min(self.laser_data)
+            if min_distance < 0.5:
+                reward -= 10 * (0.5 - min_distance)
         
         return reward
 
     def step(self, action):
-        """Take a step in the environment based on the action chosen."""
-
         vel_msg = Twist()
-        if action == 0:  # Forward
-            vel_msg.linear.x = 0.2 # 2. gyorsabb
+        if action == 0:  # Előre
+            vel_msg.linear.x = 0.2
             vel_msg.angular.z = 0.0
-        elif action == 1:  # Left turn
+        elif action == 1:  # Balra
             vel_msg.linear.x = 0.0
-            vel_msg.angular.z = 0.3 # 3. gyorsabb
-        elif action == 2:  # Right turn
+            vel_msg.angular.z = 0.3
+        elif action == 2:  # Jobbra
             vel_msg.linear.x = 0.0
-            vel_msg.angular.z = -0.3 # 3. gyorsabb
-        # Publish velocity command
+            vel_msg.angular.z = -0.3
         self.cmd_vel_pub.publish(vel_msg)
         try:
             rospy.sleep(0.1)
@@ -106,7 +95,6 @@ class CustomGazeboEnv(gym.Env):
         obs = self._get_obs()
         reward = self.reward_function()
         
-        # Check if goal is reached
         terminated = np.linalg.norm(self.goal_position - self.robot_position) < 0.1
         done = bool(terminated)
         

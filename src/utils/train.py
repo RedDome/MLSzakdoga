@@ -5,7 +5,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
-from utils.commonvalues import learningmodel, length, xgoal, ygoal
+from utils.commonvalues import learningModel, length, xGoal, yGoal
 import logging
 import os
 
@@ -13,47 +13,44 @@ def train():
     # csak egyszer szükséges meghívni
     rospy.init_node('gym_gazebo_env', anonymous=True)
 
-    models_dir = f"resources/models/{learningmodel}"
-    logdir = "resources/logs"
+    modelsDirectory = f"resources/models/{learningModel}"
+    logDirectory = "resources/logs"
 
-    if not os.path.exists(models_dir):
-        os.makedirs(models_dir)
+    if not os.path.exists(modelsDirectory):
+        os.makedirs(modelsDirectory)
 
-    if not os.path.exists(logdir):
-        os.makedirs(logdir)
+    if not os.path.exists(logDirectory):
+        os.makedirs(logDirectory)
 
     env = CustomGazeboEnv()
     check_env(env)
 
     obs = env.reset()
 
-    # env.set_goal_position(x=2.0, y=1.0)
-    env.set_goal_position(xgoal, ygoal)
+    env.set_goal_position(xGoal, yGoal)
 
-    TIMESTEPS = 1000
-    itera = length // TIMESTEPS
+    timeSteps = 1000
+    itera = length // timeSteps
 
-    if learningmodel == "A2C":
-        model = A2C('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logdir)
-    elif learningmodel == "PPO":
-        model = PPO('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logdir)
-    elif learningmodel == "DQN":
-        model = DQN('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logdir)
-    elif learningmodel == "SAC":
-        model = SAC('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logdir)
-    elif learningmodel == "TD3":
-        model = TD3('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logdir)
+    if learningModel == "A2C":
+        model = A2C('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logDirectory)
+    elif learningModel == "PPO":
+        model = PPO('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logDirectory)
+    elif learningModel == "DQN":
+        model = DQN('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logDirectory)
+    elif learningModel == "SAC":
+        model = SAC('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logDirectory)
+    elif learningModel == "TD3":
+        model = TD3('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logDirectory)
     else:
-        raise ValueError(f"Unknown learning model: {learningmodel}")
+        raise ValueError(f"Unknown learning model: {learningModel}")
 
     
     for i in range(itera):
-        model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=str(learningmodel))
-        model.save(f"{models_dir}/{TIMESTEPS*(i+1)}")
-        logging.info("Model saved at step: " + str(TIMESTEPS*(i+1)))
+        model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(learningModel))
+        model.save(f"{modelsDirectory}/{timeSteps*(i+1)}")
+        logging.info("Model saved at step: " + str(timeSteps*(i+1)))
 
     logging.info("Learning ended!")
-
-    model.save("ppo_gazebo_model")
 
     env.close()

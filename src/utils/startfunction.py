@@ -5,7 +5,7 @@ import utils.commonvalues
 
 def startFunction():
     logging.info("startFunction started!")
-    functionName = utils.commonvalues.functionname 
+    functionName = utils.commonvalues.functionName 
     logging.info("functionName: " + str(functionName))
     
     if functionName == "Learn":

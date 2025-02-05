@@ -1,18 +1,18 @@
 # shared values across files
 import logging
 
-functionname = ""
+functionName = ""
 length = 10000
-learningmodel = "PPO"
-xgoal = 2.0
-ygoal = 1.0
+learningModel = "PPO"
+xGoal = 2.0
+yGoal = 1.0
 
 def printvalues():
     logging.info("shared::printvalues Started!")
     logging.info("length: " + str(length))
-    logging.info("learningmodel: " + learningmodel)
-    logging.info("x, y goal value: %s, %s", str(xgoal), str(ygoal))
-    logging.info("functionname: " + functionname)
+    logging.info("learningModel: " + learningModel)
+    logging.info("x, y goal value: %s, %s", str(xGoal), str(yGoal))
+    logging.info("functionName: " + functionName)
     logging.info("shared::printvalues Ended!")
 
 def setLength(newValue):
@@ -20,17 +20,17 @@ def setLength(newValue):
     length = newValue
 
 def setFunctionName(newValue):
-    global functionname
-    functionname = newValue
+    global functionName
+    functionName = newValue
 
 def setLearningModel(newValue):
-    global learningmodel
-    learningmodel = newValue
+    global learningModel
+    learningModel = newValue
 
 def setXGoal(newValue):
-    global xgoal
-    xgoal = newValue
+    global xGoal
+    xGoal = newValue
 
 def setYGoal(newValue):
-    global ygoal
-    ygoal = newValue
+    global yGoal
+    yGoal = newValue
