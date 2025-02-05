@@ -6,6 +6,7 @@ import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
 from utils.commonvalues import learningModel, length, xGoal, yGoal
+from datetime import datetime
 import logging
 import os
 
@@ -21,6 +22,21 @@ def train():
 
     if not os.path.exists(logDirectory):
         os.makedirs(logDirectory)
+
+    todayDate = datetime.now().strftime("%Y-%m-%d")
+    dailyFolder = ""
+
+    suffix = 1
+    while True:
+        folderName = f"{todayDate}_{str(suffix).zfill(2)}"
+        dailyFolder = os.path.join(modelsDirectory, folderName)
+
+        if not os.path.exists(dailyFolder):
+            os.makedirs(dailyFolder)
+            logging.info("Created Folder: " + dailyFolder)
+            break
+        else:
+            suffix += 1
 
     env = CustomGazeboEnv()
     check_env(env)
@@ -48,7 +64,7 @@ def train():
     
     for i in range(itera):
         model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(learningModel))
-        model.save(f"{modelsDirectory}/{timeSteps*(i+1)}")
+        model.save(f"{dailyFolder}/{timeSteps*(i+1)}")
         logging.info("Model saved at step: " + str(timeSteps*(i+1)))
 
     logging.info("Learning ended!")
