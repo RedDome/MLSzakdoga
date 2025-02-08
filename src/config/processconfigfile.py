@@ -1,5 +1,5 @@
 import yaml
-from utils.commonvalues import setFunctionName, setLearningModel, setLength, setXGoal, setYGoal, printvalues
+from utils.commonvalues import setFunctionName, setLearningModel, setLength, setXGoal, setYGoal, setModelPath, printvalues
 from utils.startfunction import startFunction
 
 def processConfigFile(path):
@@ -11,7 +11,8 @@ def processConfigFile(path):
         'FunctionName': data.get('FunctionName', 'None'),
         'XGoalPosition': data.get('XGoalPosition', 1),
         'YGoalPosition': data.get('YGoalPosition', 1),
-        'LearningModel': data.get('LearningModel', 'Test')
+        'LearningModel': data.get('LearningModel', 'Test'),
+        'ModelPath': data.get('ModelPath', '')
     }
 
     print(output)
@@ -22,6 +23,7 @@ def processConfigFile(path):
     setXGoal(output["XGoalPosition"])
     setYGoal(output["YGoalPosition"])
     setLearningModel(output["LearningModel"])
+    setModelPath(output["ModelPath"])
 
     printvalues()
 

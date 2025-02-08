@@ -6,10 +6,12 @@ import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
 from utils.commonvalues import learningModel, length, xGoal, yGoal
+import utils.commonvalues
+from datetime import datetime
 import logging
 import os
 
-def continueTrainingGazebo(modelPath):
+def continueTrainingGazebo():
     rospy.init_node('gym_gazebo_env', anonymous=True)
 
     env = CustomGazeboEnv()
@@ -24,6 +26,21 @@ def continueTrainingGazebo(modelPath):
     if not os.path.exists(logDirectory):
         os.makedirs(logDirectory)
 
+    todayDate = datetime.now().strftime("%Y-%m-%d")
+    dailyFolder = ""
+
+    suffix = 1
+    while True:
+        folderName = f"{todayDate}_{str(suffix).zfill(2)}"
+        dailyFolder = os.path.join(modelsDirectory, folderName)
+
+        if not os.path.exists(dailyFolder):
+            os.makedirs(dailyFolder)
+            logging.info("Created Folder: " + dailyFolder)
+            break
+        else:
+            suffix += 1
+
     obs = env.reset()
 
     env.set_goal_position(xGoal, yGoal)
@@ -31,6 +48,7 @@ def continueTrainingGazebo(modelPath):
     timeSteps = 10000
     itera = length // timeSteps
 
+    modelPath = utils.commonvalues.modelPath 
     model = PPO.load(modelPath, env=env)
 
     for i in range(itera):

@@ -6,6 +6,7 @@ length = 10000
 learningModel = "PPO"
 xGoal = 2.0
 yGoal = 1.0
+modelPath = ""
 
 def printvalues():
     logging.info("shared::printvalues Started!")
@@ -13,6 +14,7 @@ def printvalues():
     logging.info("learningModel: " + learningModel)
     logging.info("x, y goal value: %s, %s", str(xGoal), str(yGoal))
     logging.info("functionName: " + functionName)
+    logging.info("modelPath: " + modelPath)
     logging.info("shared::printvalues Ended!")
 
 def setLength(newValue):
@@ -34,3 +36,7 @@ def setXGoal(newValue):
 def setYGoal(newValue):
     global yGoal
     yGoal = newValue
+
+def setModelPath(newValue):
+    global modelPath
+    modelPath = newValue

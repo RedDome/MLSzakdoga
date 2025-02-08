@@ -2,3 +2,4 @@ FunctionName: Continue
 XGoalPosition: 9
 YGoalPosition: 10
 LearningModel: A2C
+ModelPath: /workspaces/MLSzakdoga/resources/models/PPO/10000.zip
