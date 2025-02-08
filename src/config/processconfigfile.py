@@ -1,5 +1,5 @@
 import yaml
-from utils.commonvalues import setFunctionName, setLearningModel, setLength, setXGoal, setYGoal, setModelPath, printvalues
+from utils.commonvalues import setFunctionName, setLearningModel, setLength, setXGoal, setYGoal, setModelPath, printvalues, setTensorboardDataPath
 from utils.startfunction import startFunction
 
 def processConfigFile(path):
@@ -12,7 +12,8 @@ def processConfigFile(path):
         'XGoalPosition': data.get('XGoalPosition', 1),
         'YGoalPosition': data.get('YGoalPosition', 1),
         'LearningModel': data.get('LearningModel', 'Test'),
-        'ModelPath': data.get('ModelPath', '')
+        'ModelPath': data.get('ModelPath', ''),
+        'TensorboardDataPath' : data.get('TensorboardDataPath', '')
     }
 
     print(output)
@@ -24,6 +25,7 @@ def processConfigFile(path):
     setYGoal(output["YGoalPosition"])
     setLearningModel(output["LearningModel"])
     setModelPath(output["ModelPath"])
+    setTensorboardDataPath(output["TensorboardDataPath"])
 
     printvalues()
 

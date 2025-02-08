@@ -7,6 +7,7 @@ learningModel = "PPO"
 xGoal = 2.0
 yGoal = 1.0
 modelPath = ""
+tensorboardDataPath = ""
 
 def printvalues():
     logging.info("shared::printvalues Started!")
@@ -15,6 +16,7 @@ def printvalues():
     logging.info("x, y goal value: %s, %s", str(xGoal), str(yGoal))
     logging.info("functionName: " + functionName)
     logging.info("modelPath: " + modelPath)
+    logging.info("tensorboardDataPath: " + tensorboardDataPath)
     logging.info("shared::printvalues Ended!")
 
 def setLength(newValue):
@@ -40,3 +42,7 @@ def setYGoal(newValue):
 def setModelPath(newValue):
     global modelPath
     modelPath = newValue
+
+def setTensorboardDataPath(newValue):
+    global tensorboardDataPath
+    tensorboardDataPath = newValue

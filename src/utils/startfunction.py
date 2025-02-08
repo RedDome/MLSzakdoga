@@ -1,6 +1,7 @@
 import logging
 from utils.train import train
 from utils.continuetraining import continueTrainingGazebo
+from utils.saveDataFromTensorboardFiles import saveDataFromTensorboardFiles
 import utils.commonvalues
 
 def startFunction():
@@ -15,5 +16,7 @@ def startFunction():
     elif functionName == "Capture":
         logging.info("TBD")
         # captureGazebo()
+    elif functionName == "SaveData":
+        saveDataFromTensorboardFiles()
     else:
         raise ValueError(f"Unknown function: {functionName}")
