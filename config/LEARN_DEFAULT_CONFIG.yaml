@@ -1,4 +1,9 @@
 FunctionName: Learn
-XGoalPosition: 9
-YGoalPosition: 10
-LearningModel: A2C
+FunctionProperties:
+  XGoalPosition: 9.0
+  YGoalPosition: 10.0
+  LearningModel: PPO
+  Length: 1000
+  SaveDataAfterFinished: False
+  SaveDataProperties:
+    CsvFilePath: /workspaces/MLSzakdoga/resources/logs/PPO_0/tensorboard_data.csv

@@ -4,7 +4,7 @@ import csv
 import utils.commonvalues
 
 def saveDataFromTensorboardFiles():
-    csvFilename = '/workspaces/MLSzakdoga/resources/logs/PPO_0/tensorboard_data.csv'
+    csvFilename = utils.commonvalues.csvFilePath
     tensorboardDataPath = utils.commonvalues.tensorboardDataPath
 
     with open(csvFilename, 'w', newline='') as csvfile:

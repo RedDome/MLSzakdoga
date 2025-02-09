@@ -8,6 +8,8 @@ xGoal = 2.0
 yGoal = 1.0
 modelPath = ""
 tensorboardDataPath = ""
+csvFilePath = ""
+saveDataAfterFinished = False
 
 def printvalues():
     logging.info("shared::printvalues Started!")
@@ -46,3 +48,11 @@ def setModelPath(newValue):
 def setTensorboardDataPath(newValue):
     global tensorboardDataPath
     tensorboardDataPath = newValue
+
+def setCSVFilePath(newValue):
+    global csvFilePath
+    csvFilePath = newValue
+
+def setSaveDataAfterFinished(newValue):
+    global saveDataAfterFinished
+    saveDataAfterFinished = newValue
