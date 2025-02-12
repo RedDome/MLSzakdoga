@@ -10,6 +10,8 @@ modelPath = ""
 tensorboardDataPath = ""
 csvFilePath = ""
 saveDataAfterFinished = False
+logFolder = ""
+modelFolder = ""
 
 def printvalues():
     logging.info("shared::printvalues Started!")
@@ -20,6 +22,10 @@ def printvalues():
     logging.info("modelPath: " + modelPath)
     logging.info("tensorboardDataPath: " + tensorboardDataPath)
     logging.info("shared::printvalues Ended!")
+
+def test():
+    logging.info("logFolder: " + str(logFolder))
+    logging.info("modelFolder: " + str(modelFolder))
 
 def setLength(newValue):
     global length
@@ -56,3 +62,11 @@ def setCSVFilePath(newValue):
 def setSaveDataAfterFinished(newValue):
     global saveDataAfterFinished
     saveDataAfterFinished = newValue
+
+def setLogFolder(newValue):
+    global logFolder
+    logFolder = newValue
+
+def setModelFolder(newValue):
+    global modelFolder
+    modelFolder = newValue
