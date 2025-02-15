@@ -1,5 +1,5 @@
-import logging
+from loguru import logger
 
 def exit_app(self):
-    logging.info("Exiting program!")
+    logger.info("Exiting program!")
     self.quit()

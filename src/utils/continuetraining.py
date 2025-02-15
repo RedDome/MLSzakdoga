@@ -8,7 +8,7 @@ from stable_baselines3.common.env_checker import check_env
 from utils.commonvalues import learningModel, length, xGoal, yGoal, logFolder, modelFolder
 from utils.createDirectories import createDirectories
 import utils.commonvalues
-import logging
+from loguru import logger
 
 def continueTrainingGazebo():
     rospy.init_node('gym_gazebo_env', anonymous=True)
@@ -20,23 +20,23 @@ def continueTrainingGazebo():
 
     obs = env.reset()
 
-    logging.info("xGoal: " + str(xGoal))
-    logging.info("yGoal: " + str(yGoal))
+    logger.info("xGoal: " + str(xGoal))
+    logger.info("yGoal: " + str(yGoal))
     env.set_goal_position(xGoal, yGoal)
 
-    logging.info("length: " + str(length))
+    logger.info("length: " + str(length))
     timeSteps = 1000
     itera = length // timeSteps
 
-    logging.info("learningModel: " + str(learningModel))
+    logger.info("learningModel: " + str(learningModel))
     modelPath = utils.commonvalues.modelPath 
     model = PPO.load(modelPath, env=env)
 
     for i in range(itera):
         model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(learningModel))
         model.save(f"{modelFolder}/{timeSteps*(i+1)}")
-        logging.info("Model saved at step: " + str(timeSteps*(i+1)))
+        logger.info("Model saved at step: " + str(timeSteps*(i+1)))
 
-    logging.info("Learning ended!")
+    logger.info("Learning ended!")
 
     env.close()

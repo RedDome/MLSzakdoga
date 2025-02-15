@@ -1,5 +1,5 @@
 # shared values across files
-import logging
+from loguru import logger
 
 functionName = ""
 length = 10000
@@ -14,18 +14,18 @@ logFolder = ""
 modelFolder = ""
 
 def printvalues():
-    logging.info("shared::printvalues Started!")
-    logging.info("length: " + str(length))
-    logging.info("learningModel: " + learningModel)
-    logging.info("x, y goal value: %s, %s", str(xGoal), str(yGoal))
-    logging.info("functionName: " + functionName)
-    logging.info("modelPath: " + modelPath)
-    logging.info("tensorboardDataPath: " + tensorboardDataPath)
-    logging.info("shared::printvalues Ended!")
+    logger.info("shared::printvalues Started!")
+    logger.info("length: " + str(length))
+    logger.info("learningModel: " + learningModel)
+    logger.info("x, y goal value: %s, %s", str(xGoal), str(yGoal))
+    logger.info("functionName: " + functionName)
+    logger.info("modelPath: " + modelPath)
+    logger.info("tensorboardDataPath: " + tensorboardDataPath)
+    logger.info("shared::printvalues Ended!")
 
 def test():
-    logging.info("logFolder: " + str(logFolder))
-    logging.info("modelFolder: " + str(modelFolder))
+    logger.info("logFolder: " + str(logFolder))
+    logger.info("modelFolder: " + str(modelFolder))
 
 def setLength(newValue):
     global length

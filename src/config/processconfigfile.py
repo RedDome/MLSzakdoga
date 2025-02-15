@@ -1,7 +1,7 @@
 import yaml
 from utils.commonvalues import setFunctionName, setLearningModel, setLength, setXGoal, setYGoal, setModelPath, printvalues, setTensorboardDataPath, setSaveDataAfterFinished, setCSVFilePath
 from utils.startfunction import startFunction
-import logging
+from loguru import logger
 
 DEFAULTS = {
     'FunctionName': 'None',
@@ -22,7 +22,7 @@ def processConfigFile(path):
     functionName = data.get('FunctionName', DEFAULTS['FunctionName'])
 
     if functionName in ("None", ""):
-        logging.error("FunctionName is not defined, check the config file! Program will be exiting now!")
+        logger.error("FunctionName is not defined, check the config file! Program will be exiting now!")
         raise ValueError(f"FunctionName is not defined!")
 
     setFunctionName(functionName)
@@ -58,7 +58,7 @@ def processConfigFile(path):
 
 def processSaveData(data):
     if data.get('FunctionProperties').get('TensorboardDataPath') == "":
-        logging.error("TensorboardDataPath value not given, using default value!")
+        logger.error("TensorboardDataPath value not given, using default value!")
 
     setTensorboardDataPath(data.get('FunctionProperties').get('TensorboardDataPath', DEFAULTS['TensorboardDataPath']))
     setCSVFilePath(data.get('FunctionProperties').get('CsvFilePath', DEFAULTS['CsvFilePath']))
@@ -67,7 +67,7 @@ def processSaveData(data):
 
 def processCaptureData(data):
     # TODO
-    logging.info("TDB")
+    logger.info("TDB")
 
 def processContinueData(data):
     setModelPath(data.get('FunctionProperties')
