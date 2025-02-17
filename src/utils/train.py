@@ -6,6 +6,7 @@ import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
 from utils.commonvalues import learningModel, length, xGoal, yGoal, logFolder, modelFolder
+import utils.commonvalues
 from utils.createDirectories import createDirectories
 from loguru import logger
 
@@ -28,6 +29,7 @@ def train():
     timeSteps = 1000
     itera = length // timeSteps
 
+    logFolder = utils.commonvalues.logFolder
     logger.info("learningModel: " + str(learningModel))
     if learningModel == "A2C":
         model = A2C('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logFolder)
@@ -41,7 +43,8 @@ def train():
         model = TD3('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logFolder)
     else:
         raise ValueError(f"Unknown learning model: {learningModel}")
-
+    
+    modelFolder = utils.commonvalues.modelFolder
     logger.info("logFolder: " + str(logFolder))
     logger.info("modelFolder: " + str(modelFolder))
 
