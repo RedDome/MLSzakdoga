@@ -1,5 +1,5 @@
 import yaml
-from utils.commonvalues import setFunctionName, setLearningModel, setLength, setXGoal, setYGoal, setModelPath, printvalues, setTensorboardDataPath, setSaveDataAfterFinished, setCSVFilePath
+import utils.commonvalues as cm
 from utils.startfunction import startFunction
 from loguru import logger
 
@@ -25,7 +25,7 @@ def processConfigFile(path):
         logger.error("FunctionName is not defined, check the config file! Program will be exiting now!")
         raise ValueError(f"FunctionName is not defined!")
 
-    setFunctionName(functionName)
+    cm.setFunctionName(functionName)
 
     if functionName == "SaveData":
         processSaveData(data)
@@ -40,18 +40,18 @@ def processConfigFile(path):
     if functionName == "Continue":
         processContinueData(data)
 
-    setXGoal(data.get('FunctionProperties', {}).get('XGoalPosition', DEFAULTS['XGoalPosition']))
-    setYGoal(data.get('FunctionProperties', {}).get('YGoalPosition', DEFAULTS['YGoalPosition']))
-    setLearningModel(data.get('FunctionProperties', {}).get('LearningModel', DEFAULTS['LearningModel']))
-    setLength(data.get('FunctionProperties', {}).get('Length', DEFAULTS['Length']))
+    cm.setXGoal(data.get('FunctionProperties', {}).get('XGoalPosition', DEFAULTS['XGoalPosition']))
+    cm.setYGoal(data.get('FunctionProperties', {}).get('YGoalPosition', DEFAULTS['YGoalPosition']))
+    cm.setLearningModel(data.get('FunctionProperties', {}).get('LearningModel', DEFAULTS['LearningModel']))
+    cm.setLength(data.get('FunctionProperties', {}).get('Length', DEFAULTS['Length']))
 
     setSaveDataAfterFinishedValue = data.get('FunctionProperties', {}).get('SaveDataAfterFinished', DEFAULTS['SaveDataAfterFinished'])
-    setSaveDataAfterFinished(setSaveDataAfterFinishedValue)
+    cm.setSaveDataAfterFinished(setSaveDataAfterFinishedValue)
 
     if setSaveDataAfterFinishedValue:
         setCSVFilePath(data.get('FunctionProperties', {}).get('SaveDataProperties', {}).get('CsvFilePath', DEFAULTS['CsvFilePath']))
 
-    printvalues() # can be removed later
+    cm.printvalues() # can be removed later
 
     startFunction()
 
@@ -60,8 +60,8 @@ def processSaveData(data):
     if data.get('FunctionProperties').get('TensorboardDataPath') == "":
         logger.error("TensorboardDataPath value not given, using default value!")
 
-    setTensorboardDataPath(data.get('FunctionProperties').get('TensorboardDataPath', DEFAULTS['TensorboardDataPath']))
-    setCSVFilePath(data.get('FunctionProperties').get('CsvFilePath', DEFAULTS['CsvFilePath']))
+    cm.setTensorboardDataPath(data.get('FunctionProperties').get('TensorboardDataPath', DEFAULTS['TensorboardDataPath']))
+    cm.setCSVFilePath(data.get('FunctionProperties').get('CsvFilePath', DEFAULTS['CsvFilePath']))
 
     printvalues()
 
@@ -70,5 +70,4 @@ def processCaptureData(data):
     logger.info("TDB")
 
 def processContinueData(data):
-    setModelPath(data.get('FunctionProperties')
-    .get('ModelPath', DEFAULTS['ModelPath']))
+    cm.setModelPath(data.get('FunctionProperties').get('ModelPath', DEFAULTS['ModelPath']))

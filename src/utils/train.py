@@ -5,8 +5,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
-from utils.commonvalues import learningModel, length, xGoal, yGoal, logFolder, modelFolder
-import utils.commonvalues
+import utils.commonvalues as cm
 from utils.createDirectories import createDirectories
 from loguru import logger
 
@@ -21,36 +20,34 @@ def train():
 
     obs = env.reset()
 
-    logger.info("xGoal: " + str(xGoal))
-    logger.info("yGoal: " + str(yGoal))
-    env.set_goal_position(xGoal, yGoal)
+    logger.info("xGoal: " + str(cm.xGoal))
+    logger.info("yGoal: " + str(cm.yGoal))
+    env.set_goal_position(cm.xGoal, cm.yGoal)
 
-    logger.info("length: " + str(length))
+    logger.info("length: " + str(cm.length))
     timeSteps = 1000
-    itera = length // timeSteps
+    itera = cm.length // timeSteps
 
-    logFolder = utils.commonvalues.logFolder
-    logger.info("learningModel: " + str(learningModel))
-    if learningModel == "A2C":
-        model = A2C('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logFolder)
-    elif learningModel == "PPO":
-        model = PPO('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logFolder)
-    elif learningModel == "DQN":
-        model = DQN('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logFolder)
-    elif learningModel == "SAC":
-        model = SAC('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logFolder)
-    elif learningModel == "TD3":
-        model = TD3('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=logFolder)
+    logger.info("learningModel: " + str(cm.learningModel))
+    if cm.learningModel == "A2C":
+        model = A2C('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=cm.logFolder)
+    elif cm.learningModel == "PPO":
+        model = PPO('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=cm.logFolder)
+    elif cm.learningModel == "DQN":
+        model = DQN('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=cm.logFolder)
+    elif cm.learningModel == "SAC":
+        model = SAC('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=cm.logFolder)
+    elif cm.learningModel == "TD3":
+        model = TD3('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=cm.logFolder)
     else:
-        raise ValueError(f"Unknown learning model: {learningModel}")
+        raise ValueError(f"Unknown learning model: {cm.learningModel}")
     
-    modelFolder = utils.commonvalues.modelFolder
-    logger.info("logFolder: " + str(logFolder))
-    logger.info("modelFolder: " + str(modelFolder))
+    logger.info("logFolder: " + str(cm.logFolder))
+    logger.info("modelFolder: " + str(cm.modelFolder))
 
     for i in range(itera):
-        model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(learningModel))
-        model.save(f"{modelFolder}/{timeSteps*(i+1)}")
+        model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(cm.learningModel))
+        model.save(f"{cm.modelFolder}/{timeSteps*(i+1)}")
         logger.info("Model saved at step: " + str(timeSteps*(i+1)))
 
     logger.info("Learning ended!")

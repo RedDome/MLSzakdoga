@@ -5,9 +5,8 @@ warnings.filterwarnings("ignore", category=UserWarning)
 import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
-from utils.commonvalues import learningModel, length, xGoal, yGoal, logFolder, modelFolder
+import utils.commonvalues as cm
 from utils.createDirectories import createDirectories
-import utils.commonvalues
 from loguru import logger
 
 def continueTrainingGazebo():
@@ -20,21 +19,20 @@ def continueTrainingGazebo():
 
     obs = env.reset()
 
-    logger.info("xGoal: " + str(xGoal))
-    logger.info("yGoal: " + str(yGoal))
-    env.set_goal_position(xGoal, yGoal)
+    logger.info("xGoal: " + str(cm.xGoal))
+    logger.info("yGoal: " + str(cm.yGoal))
+    env.set_goal_position(cm.xGoal, cm.yGoal)
 
-    logger.info("length: " + str(length))
+    logger.info("length: " + str(cm.length))
     timeSteps = 1000
-    itera = length // timeSteps
+    itera = cm.length // timeSteps
 
-    logger.info("learningModel: " + str(learningModel))
-    modelPath = utils.commonvalues.modelPath 
-    model = PPO.load(modelPath, env=env)
+    logger.info("learningModel: " + str(cm.learningModel))
+    model = PPO.load(cm.modelPath, env=env)
 
     for i in range(itera):
-        model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(learningModel))
-        model.save(f"{modelFolder}/{timeSteps*(i+1)}")
+        model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(cm.learningModel))
+        model.save(f"{cm.modelFolder}/{timeSteps*(i+1)}")
         logger.info("Model saved at step: " + str(timeSteps*(i+1)))
 
     logger.info("Learning ended!")
