@@ -1,4 +1,4 @@
 FunctionName: SaveData
 FunctionProperties:
   LogFolder: /workspaces/MLSzakdoga/resources/logs/PPO_0
-  CsvFilePath: /workspaces/MLSzakdoga/resources/logs/PPO_0/tensorboard_data.csv
+  CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv
