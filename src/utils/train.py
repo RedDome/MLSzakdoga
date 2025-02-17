@@ -7,6 +7,7 @@ from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
 import utils.commonvalues as cm
 from utils.createDirectories import createDirectories
+from utils.saveDataFromTensorboardFiles import saveDataFromTensorboardFiles
 from loguru import logger
 
 def train():
@@ -52,4 +53,9 @@ def train():
 
     logger.info("Learning ended!")
 
+    if cm.saveDataAfterFinished:
+        logger.info("Saving data function enabled!")
+        cm.setLogFolder(f"{cm.logFolder}/{cm.learningModel}_0")
+        saveDataFromTensorboardFiles()
+        
     env.close()

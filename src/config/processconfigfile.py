@@ -12,7 +12,7 @@ DEFAULTS = {
     'SaveDataAfterFinished' : False,
     'ModelPath': '/workspaces/MLSzakdoga/resources/models/PPO/10000.zip',
     'CsvFilePath': '/workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv',
-    'TensorboardDataPath': '/workspaces/MLSzakdoga/resources/logs/PPO_0'
+    'LogFolder': '/workspaces/MLSzakdoga/resources/logs/PPO_0'
 }
 
 def processConfigFile(path):
@@ -49,7 +49,7 @@ def processConfigFile(path):
     cm.setSaveDataAfterFinished(setSaveDataAfterFinishedValue)
 
     if setSaveDataAfterFinishedValue:
-        setCSVFilePath(data.get('FunctionProperties', {}).get('SaveDataProperties', {}).get('CsvFilePath', DEFAULTS['CsvFilePath']))
+        cm.setCSVFilePath(data.get('FunctionProperties', {}).get('SaveDataProperties', {}).get('CsvFilePath', DEFAULTS['CsvFilePath']))
 
     cm.printvalues() # can be removed later
 
@@ -57,13 +57,13 @@ def processConfigFile(path):
 
 
 def processSaveData(data):
-    if data.get('FunctionProperties').get('TensorboardDataPath') == "":
-        logger.error("TensorboardDataPath value not given, using default value!")
+    if data.get('FunctionProperties').get('LogFolder') == "":
+        logger.error("LogFolder value not given, using default value!")
 
-    cm.setTensorboardDataPath(data.get('FunctionProperties').get('TensorboardDataPath', DEFAULTS['TensorboardDataPath']))
+    cm.setLogFolder(data.get('FunctionProperties').get('LogFolder', DEFAULTS['LogFolder']))
     cm.setCSVFilePath(data.get('FunctionProperties').get('CsvFilePath', DEFAULTS['CsvFilePath']))
 
-    printvalues()
+    cm.printvalues()
 
 def processCaptureData(data):
     # TODO
