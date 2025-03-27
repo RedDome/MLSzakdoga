@@ -6,7 +6,6 @@ mkdir -p "$CATKIN_WS_DIR/src/voros_dome/launch"
 mkdir -p "$CATKIN_WS_DIR/src/voros_dome/worlds"
 mkdir -p "$CATKIN_WS_DIR/src/voros_dome/rviz"
 
-# Fájlok létrejövetelének ellenőrzése
 if [[ ! -d "$CATKIN_WS_DIR/src/voros_dome/launch" || ! -d "$CATKIN_WS_DIR/src/voros_dome/worlds" || ! -d "$CATKIN_WS_DIR/src/voros_dome/rviz" ]]; then
   echo "Hiba: A szükséges könyvtárak létrehozása nem sikerült!"
   exit 1
@@ -25,7 +24,6 @@ source /opt/ros/noetic/setup.bash
 source "$CATKIN_WS_DIR/devel/setup.bash"
 export TURTLEBOT3_MODEL=burger
 
-# Ellenőrizzük, hogy a workspace forrásolása sikeres volt-e
 if [[ -z "$ROS_PACKAGE_PATH" ]]; then
   echo "Hiba: A ROS környezet forrásolása nem sikerült!"
   exit 1
@@ -46,7 +44,6 @@ cat <<EOF > "$CATKIN_WS_DIR/src/voros_dome/launch/custom_world.launch"
 </launch>
 EOF
 
-# # Fájl létrejövetelének ellenőrzése
 if [[ ! -f "$CATKIN_WS_DIR/src/voros_dome/launch/custom_world.launch" ]]; then
   echo "Hiba: A custom_world.launch fájl létrehozása sikertelen volt!"
   exit 1

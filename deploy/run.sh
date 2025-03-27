@@ -2,8 +2,8 @@
 
 xhost local:docker
 
-CONTAINER_NAME="ros-mls-container"
-IMAGE_NAME="ros-mls-deployment"
+CONTAINER_NAME="mlszakdoga_deploy_container"
+IMAGE_NAME="mlszakdoga_deploy"
 CONFIG_PATH="/workspaces/MLSzakdoga/config/LEARN_DEFAULT_CONFIG.yaml"
 
 ROS_IP=$(hostname -I | awk '{print $1}')

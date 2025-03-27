@@ -1,5 +1,4 @@
 import subprocess
-import time
 
 startFilePath = './start_ros.sh'
 configFilePath = '/workspaces/MLSzakdoga/config/LEARN_DEFAULT_CONFIG.yaml'

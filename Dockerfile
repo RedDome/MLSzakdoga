@@ -1,4 +1,3 @@
-# Using the official ROS Noetic image, which includes Gazebo 11
 FROM osrf/ros:noetic-desktop-full
 
 ENV DEBIAN_FRONTEND=noninteractive

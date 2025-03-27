@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker kill ros-mls-container
+docker kill mlszakdoga_deploy_container
