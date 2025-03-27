@@ -8,6 +8,7 @@ import sys
 from config.processconfigfile import processConfigFile
 
 if __name__ == "__main__":
+    logger.info("Main started")
     if len(sys.argv) == 2:
         path = sys.argv[1]
     else:

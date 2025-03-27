@@ -41,6 +41,7 @@ RUN pip3 install --upgrade setuptools
 RUN pip3 install --default-timeout=600 stable-baselines3[extra]
 RUN pip3 install --default-timeout=600 gym
 RUN pip3 install --default-timeout=600 tensorflow
+RUN pip3 install --default-timeout=600 loguru
 
 RUN if [ -d "/workspaces/MLSzakdoga/catkin_ws/src" ]; then rm -Rf /workspaces/MLSzakdoga/catkin_ws/src; fi
 RUN mkdir -p /workspaces/MLSzakdoga/catkin_ws/src
