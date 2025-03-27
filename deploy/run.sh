@@ -10,7 +10,7 @@ ROS_IP=$(hostname -I | awk '{print $1}')
 ROS_MASTER_URI="http://$ROS_IP:11311"
 DISPLAY=":0"
 
-docker run -d  \
+docker run -d \
     --name $CONTAINER_NAME \
     --network host \
     --rm \
