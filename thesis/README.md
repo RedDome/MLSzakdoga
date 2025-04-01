@@ -10,6 +10,5 @@ fixes:
 2, 3, 4 main titles can't collapse
 2.4 intro outro needed
 2.4.1-2.4.4 more info needed
-3.3 use symbols
 3.4.3 use symbols
 3.4.5 more specific text
