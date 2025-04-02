@@ -30,7 +30,7 @@ def saveDataFromTensorboardFiles():
     logger.info("Data extracted to : " + cm.csvFilePath)
 
     df = pd.read_csv(cm.csvFilePath)
-    pivot_df = df.pivot_table(index='step', columns='tag', values='value', aggfunc='first')
+    pivot_df = df.pivot_table(index='tag', columns='step', values='value', aggfunc='first')
     pivot_df.reset_index(inplace=True)
     pivot_df.to_csv(cm.csvFilePath, index=False)
 
