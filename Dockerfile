@@ -37,7 +37,7 @@ RUN pip3 install --default-timeout=100 gym
 RUN pip3 install --default-timeout=100 catkin_pkg empy rospkg
 RUN pip3 install --default-timeout=600 tensorflow
 RUN pip3 install --default-timeout=600 loguru
-RUN pip3 install --default-timeout=600 numpy opencv-python mss
+RUN pip3 install --default-timeout=600 numpy
 RUN pip3 install --default-timeout=600 pandas
 
 RUN mkdir -p /workspaces/MLSzakdoga/catkin_ws/src
