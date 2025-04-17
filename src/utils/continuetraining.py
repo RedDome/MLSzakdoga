@@ -6,6 +6,7 @@ import os
 import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.logger import configure
 import utils.commonvalues as cm
 from utils.createDirectories import createDirectories
 from loguru import logger
@@ -30,6 +31,9 @@ def continueTrainingGazebo():
 
     logger.info("learningModel: " + str(cm.learningModel))
     model = PPO.load(cm.modelPath, env=env)
+
+    new_logger = configure(cm.logFolder, ["stdout", "tensorboard"])
+    model.set_logger(new_logger)
 
     modelFileName= os.path.basename(cm.modelPath)
     savedStep = int(os.path.splitext(modelFileName)[0])
