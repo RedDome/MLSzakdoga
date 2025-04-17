@@ -2,6 +2,7 @@ from env.custom_env import CustomGazeboEnv
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
+import os
 import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
@@ -30,10 +31,13 @@ def continueTrainingGazebo():
     logger.info("learningModel: " + str(cm.learningModel))
     model = PPO.load(cm.modelPath, env=env)
 
+    modelFileName= os.path.basename(cm.modelPath)
+    savedStep = int(os.path.splitext(modelFileName)[0])
+
     for i in range(itera):
         model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(cm.learningModel))
-        model.save(f"{cm.modelFolder}/{timeSteps*(i+1)}")
-        logger.info("Model saved at step: " + str(timeSteps*(i+1)))
+        model.save(f"{cm.modelFolder}/{savedStep + timeSteps*(i+1)}")
+        logger.info("Model saved at step: " + str(savedStep + timeSteps*(i+1)))
 
     logger.info("Learning ended!")
 
