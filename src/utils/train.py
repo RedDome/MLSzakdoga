@@ -5,6 +5,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 import rospy
 from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.logger import configure
 import utils.commonvalues as cm
 from utils.createDirectories import createDirectories
 from utils.saveDataFromTensorboardFiles import saveDataFromTensorboardFiles
@@ -42,6 +43,9 @@ def train():
         model = TD3('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=cm.logFolder)
     else:
         raise ValueError(f"Unknown learning model: {cm.learningModel}")
+    
+    new_logger = configure(cm.logFolder, ["stdout", "tensorboard"])
+    model.set_logger(new_logger)
     
     logger.info("logFolder: " + str(cm.logFolder))
     logger.info("modelFolder: " + str(cm.modelFolder))
