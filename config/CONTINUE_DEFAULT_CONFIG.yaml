@@ -1,10 +1,10 @@
 FunctionName: Continue
 FunctionProperties:
-  ModelPath: /workspaces/MLSzakdoga/resources/models/PPO/10000.zip
+  ModelPath:
   XGoalPosition: 9.0
   YGoalPosition: 10.0
   LearningModel: PPO
-  Length: 1000
+  Length: 5000
   SaveDataAfterFinished: False
   SaveDataProperties:
     CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv
