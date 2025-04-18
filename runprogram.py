@@ -7,6 +7,6 @@ logger.add("app.log")
 startFilePath = './start_ros.sh'
 configFilePath = '/workspaces/MLSzakdoga/config/LEARN_DEFAULT_CONFIG.yaml'
 
-logger.info("runprogram started!")
+logger.info("Runprogram started!")
 
 subprocess.run(['python3', 'src/main.py', configFilePath])

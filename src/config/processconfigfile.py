@@ -29,11 +29,7 @@ def processConfigFile(path):
 
     if functionName == "SaveData":
         processSaveData(data)
-        startFunction()
-        return
-
-    if functionName == "Capture":
-        processCaptureData(data)
+        cm.printvalues()
         startFunction()
         return
 
@@ -51,7 +47,7 @@ def processConfigFile(path):
     if setSaveDataAfterFinishedValue:
         cm.setCSVFilePath(data.get('FunctionProperties', {}).get('SaveDataProperties', {}).get('CsvFilePath', DEFAULTS['CsvFilePath']))
 
-    cm.printvalues() # can be removed later
+    cm.printvalues()
 
     startFunction()
 
@@ -62,12 +58,6 @@ def processSaveData(data):
 
     cm.setLogFolder(data.get('FunctionProperties').get('LogFolder', DEFAULTS['LogFolder']))
     cm.setCSVFilePath(data.get('FunctionProperties').get('CsvFilePath', DEFAULTS['CsvFilePath']))
-
-    cm.printvalues()
-
-def processCaptureData(data):
-    # TODO
-    logger.info("TDB")
 
 def processContinueData(data):
     cm.setModelPath(data.get('FunctionProperties').get('ModelPath', DEFAULTS['ModelPath']))

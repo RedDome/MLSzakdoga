@@ -13,9 +13,6 @@ def startFunction():
         train()
     elif functionName == "Continue":
         continueTrainingGazebo()
-    elif functionName == "Capture":
-        logger.info("TBD")
-        # captureGazebo()
     elif functionName == "SaveData":
         saveDataFromTensorboardFiles()
     else:
