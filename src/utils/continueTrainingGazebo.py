@@ -31,7 +31,19 @@ def continueTrainingGazebo():
     itera = sv.length // timeSteps
 
     logger.info("learningModel: " + str(sv.learningModel))
-    model = PPO.load(sv.modelPath, env=env)
+    if sv.learningModel == "A2C":
+        model = A2C.load(sv.modelPath, env=env)
+    elif sv.learningModel == "PPO":
+        model = PPO.load(sv.modelPath, env=env)
+    elif sv.learningModel == "DQN":
+        model = DQN.load(sv.modelPath, env=env)
+    elif sv.learningModel == "SAC":
+        model = SAC.load(sv.modelPath, env=env)
+    elif sv.learningModel == "TD3":
+        model = TD3.load(sv.modelPath, env=env)
+    else:
+        logger.error("Unknown learning model! Supported learning models are: A2C, PPO, DQN, SAC, TD3")
+        raise ValueError(f"Unknown learning model: {sv.learningModel}")
 
     new_logger = configure(sv.logFolder, ["stdout", "tensorboard"])
     model.set_logger(new_logger)
