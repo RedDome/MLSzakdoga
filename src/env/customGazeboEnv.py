@@ -8,9 +8,9 @@ from sensor_msgs.msg import LaserScan
 from std_srvs.srv import Empty
 from tf.transformations import euler_from_quaternion
 
-class CustomGazeboEnv(gym.Env):
+class customGazeboEnv(gym.Env):
     def __init__(self, start_position=(0, 0), goal_position=(5, 5)):
-        super(CustomGazeboEnv, self).__init__()
+        super(customGazeboEnv, self).__init__()
         
         self.start_position = np.array(start_position, dtype=np.float32)
         self.goal_position = np.array(goal_position, dtype=np.float32)

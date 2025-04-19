@@ -1,11 +1,12 @@
-import utils.commonvalues as cm
+from utils.sharedValues import sharedValues
 from datetime import datetime
 import os
 from loguru import logger
 
 def createDirectories():
-    modelsDirectory = f"resources/models/{cm.learningModel}"
-    logDirectory = f"resources/logs/{cm.learningModel}"
+    sv = sharedValues()
+    modelsDirectory = f"resources/models/{sv.learningModel}"
+    logDirectory = f"resources/logs/{sv.learningModel}"
 
     if not os.path.exists(modelsDirectory):
         os.makedirs(modelsDirectory)
@@ -28,8 +29,8 @@ def createDirectories():
             os.makedirs(logFolder)
             logger.info("Created Model Folder: " + modelFolder)
             logger.info("Created Log Folder: " + logFolder)
-            cm.setModelFolder(modelFolder)
-            cm.setLogFolder(logFolder)
+            sv.setModelFolder(modelFolder)
+            sv.setLogFolder(logFolder)
             break
         else:
             suffix += 1

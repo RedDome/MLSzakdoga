@@ -5,7 +5,7 @@ logger.add("app.log")
 
 import sys
 
-from config.processconfigfile import processConfigFile
+from config.processConfigFile import processConfigFile
 
 if __name__ == "__main__":
     logger.info("Main started")

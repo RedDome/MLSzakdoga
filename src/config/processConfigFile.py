@@ -1,6 +1,6 @@
 import yaml
-import utils.commonvalues as cm
-from utils.startfunction import startFunction
+from utils.sharedValues import sharedValues
+from utils.startFunction import startFunction
 from loguru import logger
 
 DEFAULTS = {
@@ -16,6 +16,7 @@ DEFAULTS = {
 }
 
 def processConfigFile(path):
+    sv = sharedValues()
     with open(path, 'r') as f:
         data = yaml.full_load(f)
 
@@ -25,39 +26,41 @@ def processConfigFile(path):
         logger.error("FunctionName is not defined, check the config file! Program will be exiting now!")
         raise ValueError(f"FunctionName is not defined!")
 
-    cm.setFunctionName(functionName)
+    sv.setFunctionName(functionName)
 
     if functionName == "SaveData":
         processSaveData(data)
-        cm.printvalues()
+        sv.printValues()
         startFunction()
         return
 
     if functionName == "Continue":
         processContinueData(data)
 
-    cm.setXGoal(data.get('FunctionProperties', {}).get('XGoalPosition', DEFAULTS['XGoalPosition']))
-    cm.setYGoal(data.get('FunctionProperties', {}).get('YGoalPosition', DEFAULTS['YGoalPosition']))
-    cm.setLearningModel(data.get('FunctionProperties', {}).get('LearningModel', DEFAULTS['LearningModel']))
-    cm.setLength(data.get('FunctionProperties', {}).get('Length', DEFAULTS['Length']))
+    sv.setXGoal(data.get('FunctionProperties', {}).get('XGoalPosition', DEFAULTS['XGoalPosition']))
+    sv.setYGoal(data.get('FunctionProperties', {}).get('YGoalPosition', DEFAULTS['YGoalPosition']))
+    sv.setLearningModel(data.get('FunctionProperties', {}).get('LearningModel', DEFAULTS['LearningModel']))
+    sv.setLength(data.get('FunctionProperties', {}).get('Length', DEFAULTS['Length']))
 
     setSaveDataAfterFinishedValue = data.get('FunctionProperties', {}).get('SaveDataAfterFinished', DEFAULTS['SaveDataAfterFinished'])
-    cm.setSaveDataAfterFinished(setSaveDataAfterFinishedValue)
+    sv.setSaveDataAfterFinished(setSaveDataAfterFinishedValue)
 
     if setSaveDataAfterFinishedValue:
-        cm.setCSVFilePath(data.get('FunctionProperties', {}).get('SaveDataProperties', {}).get('CsvFilePath', DEFAULTS['CsvFilePath']))
+        sv.setCSVFilePath(data.get('FunctionProperties', {}).get('SaveDataProperties', {}).get('CsvFilePath', DEFAULTS['CsvFilePath']))
 
-    cm.printvalues()
+    sv.printValues()
 
     startFunction()
 
 
 def processSaveData(data):
+    sv = sharedValues()
     if data.get('FunctionProperties').get('LogFolder') == "":
         logger.error("LogFolder value not given, using default value!")
 
-    cm.setLogFolder(data.get('FunctionProperties').get('LogFolder', DEFAULTS['LogFolder']))
-    cm.setCSVFilePath(data.get('FunctionProperties').get('CsvFilePath', DEFAULTS['CsvFilePath']))
+    sv.setLogFolder(data.get('FunctionProperties').get('LogFolder', DEFAULTS['LogFolder']))
+    sv.setCSVFilePath(data.get('FunctionProperties').get('CsvFilePath', DEFAULTS['CsvFilePath']))
 
 def processContinueData(data):
-    cm.setModelPath(data.get('FunctionProperties').get('ModelPath', DEFAULTS['ModelPath']))
+    sv = sharedValues()
+    sv.setModelPath(data.get('FunctionProperties').get('ModelPath', DEFAULTS['ModelPath']))
