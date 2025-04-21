@@ -21,7 +21,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_emptyYamlConfigTest(self, mock_start):
         print("test_emptyYamlConfigTest started!")
-        path = "testSources/emptyConfigFile.yaml"
+        path = "testSources/configProcessingTests/emptyConfigFile.yaml"
 
         with self.assertRaises(ValueError) as context:
             processConfigFile(path)
@@ -31,7 +31,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_emptyFunctionNameConfig(self, mock_start):
         print("test_emptyFunctionNameConfig started!")
-        path = "testSources/missingFunctionNameConfigFile.yaml"
+        path = "testSources/configProcessingTests/missingFunctionNameConfigFile.yaml"
 
         with self.assertRaises(ValueError) as context:
             processConfigFile(path)
@@ -41,7 +41,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_emptyLogFolderConfig(self, mock_start):
         print("test_emptyLogFolderConfig started!")
-        path = "testSources/missingLogFolderConfigFile.yaml"
+        path = "testSources/configProcessingTests/missingLogFolderConfigFile.yaml"
 
         with self.assertRaises(ValueError) as context:
             processConfigFile(path)
@@ -51,7 +51,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_emptyModelPathConfig(self, mock_start):
         print("test_emptyModelPathConfig started!")
-        path = "testSources/missingModelPathConfigFile.yaml"
+        path = "testSources/configProcessingTests/missingModelPathConfigFile.yaml"
 
         with self.assertRaises(ValueError) as context:
             processConfigFile(path)
@@ -61,7 +61,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_usingDefaultValuesConfig(self, mock_start):
         print("test_usingDefaultValuesConfig started!")
-        path = "testSources/missingDefaultValuesConfigFile.yaml"
+        path = "testSources/configProcessingTests/missingDefaultValuesConfigFile.yaml"
 
         processConfigFile(path)
 
@@ -74,7 +74,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_usingCsvFilePathDefaultValueConfig(self, mock_start):
         print("test_usingCsvFilePathDefaultValueConfig started!")
-        path = "testSources/missingCsvFilePathConfigFile.yaml"
+        path = "testSources/configProcessingTests/missingCsvFilePathConfigFile.yaml"
 
         processConfigFile(path)
 
@@ -83,7 +83,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_goodLearnWithSaveConfig(self, mock_start):
         print("test_goodLearnWithSaveConfig started!")
-        path = "testSources/goodLearnWithSaveConfigFile.yaml"
+        path = "testSources/configProcessingTests/goodLearnWithSaveConfigFile.yaml"
 
         processConfigFile(path)
 
@@ -98,7 +98,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_goodLearnWithoutSaveConfig(self, mock_start):
         print("test_goodLearnWithoutSaveConfig started!")
-        path = "testSources/goodLearnWithoutSaveConfigFile.yaml"
+        path = "testSources/configProcessingTests/goodLearnWithoutSaveConfigFile.yaml"
 
         processConfigFile(path)
 
@@ -113,7 +113,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_goodContinueWithSaveConfig(self, mock_start):
         print("test_goodContinueWithSaveConfig started!")
-        path = "testSources/goodContinueWithSaveConfigFile.yaml"
+        path = "testSources/configProcessingTests/goodContinueWithSaveConfigFile.yaml"
 
         processConfigFile(path)
 
@@ -129,7 +129,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_goodContinueWithoutSaveConfig(self, mock_start):
         print("test_goodContinueWithoutSaveConfig started!")
-        path = "testSources/goodContinueWithoutSaveConfigFile.yaml"
+        path = "testSources/configProcessingTests/goodContinueWithoutSaveConfigFile.yaml"
 
         processConfigFile(path)
 
@@ -145,7 +145,7 @@ class processConfigFileTest(unittest.TestCase):
     @patch('config.processConfigFile.startFunction')
     def test_goodSaveDataConfig(self, mock_start):
         print("test_goodSaveDataConfig started!")
-        path = "testSources/goodSaveDataConfigFile.yaml"
+        path = "testSources/configProcessingTests/goodSaveDataConfigFile.yaml"
 
         processConfigFile(path)
 
