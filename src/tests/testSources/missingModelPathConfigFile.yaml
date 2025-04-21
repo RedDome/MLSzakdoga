@@ -1,0 +1,10 @@
+FunctionName: Continue
+FunctionProperties:
+  ModelPath:
+  XGoalPosition: 51.0
+  YGoalPosition: 100.0
+  LearningModel: SAC
+  Length: 52000
+  SaveDataAfterFinished: False
+  SaveDataProperties:
+    CsvFilePath:

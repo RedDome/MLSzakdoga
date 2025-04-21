@@ -1,0 +1,9 @@
+FunctionName: Learn
+FunctionProperties:
+  XGoalPosition: 16.0
+  YGoalPosition: 20.0
+  LearningModel: A2C
+  Length: 34000
+  SaveDataAfterFinished: True
+  SaveDataProperties:
+    CsvFilePath:

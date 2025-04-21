@@ -2,10 +2,10 @@ from loguru import logger
 
 class sharedValues:
     functionName = ""
-    length = 10000
-    learningModel = "PPO"
-    xGoal = 2.0
-    yGoal = 1.0
+    length = 0
+    learningModel = ""
+    xGoal = 0.0
+    yGoal = 0.0
     modelPath = ""
     csvFilePath = ""
     saveDataAfterFinished = False

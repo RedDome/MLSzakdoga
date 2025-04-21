@@ -1,0 +1,9 @@
+FunctionName: Learn
+FunctionProperties:
+  XGoalPosition:
+  YGoalPosition:
+  LearningModel:
+  Length:
+  SaveDataAfterFinished:
+  SaveDataProperties:
+    CsvFilePath:
