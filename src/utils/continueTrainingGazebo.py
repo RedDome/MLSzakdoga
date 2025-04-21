@@ -9,6 +9,7 @@ from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.logger import configure
 from utils.sharedValues import sharedValues
 from utils.createDirectories import createDirectories
+from utils.saveDataFromTensorboardFiles import saveDataFromTensorboardFiles
 from loguru import logger
 
 def continueTrainingGazebo():
@@ -57,5 +58,10 @@ def continueTrainingGazebo():
         logger.info("Model saved at step: " + str(savedStep + timeSteps*(i+1)))
 
     logger.info("Learning ended!")
+
+    if sv.saveDataAfterFinished:
+        logger.info("Saving data function enabled!")
+        sv.setLogFolder(sv.logFolder)
+        saveDataFromTensorboardFiles()
 
     env.close()

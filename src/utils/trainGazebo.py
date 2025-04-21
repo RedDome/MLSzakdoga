@@ -60,7 +60,7 @@ def trainGazebo():
 
     if sv.saveDataAfterFinished:
         logger.info("Saving data function enabled!")
-        sv.setLogFolder(f"{sv.logFolder}/{sv.learningModel}_0")
+        sv.setLogFolder(sv.logFolder)
         saveDataFromTensorboardFiles()
         
     env.close()
