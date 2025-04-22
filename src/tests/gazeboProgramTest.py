@@ -1,6 +1,7 @@
 from utils.sharedValues import sharedValues
 from utils.trainGazebo import trainGazebo
 from utils.continueTrainingGazebo import continueTrainingGazebo
+from utils.saveDataFromTensorboardFiles import saveDataFromTensorboardFiles
 import unittest
 from unittest.mock import patch, MagicMock, mock_open
 import os
@@ -16,7 +17,8 @@ class processConfigFileTest(unittest.TestCase):
             "testSources/gazeboProgramTests/learnFunction/csvFolder",
             "testSources/gazeboProgramTests/continueFunction/logFolder",
             "testSources/gazeboProgramTests/continueFunction/modelFolder",
-            "testSources/gazeboProgramTests/continueFunction/csvFolder"
+            "testSources/gazeboProgramTests/continueFunction/csvFolder",
+            "testSources/gazeboProgramTests/saveDataFunction/csvFolder"
         ]:
             if os.path.exists(folder):
                 for file in os.listdir(folder):
@@ -30,6 +32,10 @@ class processConfigFileTest(unittest.TestCase):
         with open(csv_file_path, 'w', newline='') as f:
             writer = csv.writer(f)
 
+        csv_file_path = os.path.join("testSources/gazeboProgramTests/saveDataFunction/csvFolder", "data.csv")
+        with open(csv_file_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+
     def setUp(self):
         self.cleanUpFolders()
 
@@ -38,7 +44,7 @@ class processConfigFileTest(unittest.TestCase):
 
     @patch('utils.trainGazebo.createDirectories')
     def test_learnFunctionWithSave(self, mock_start):
-        print("test_goodContinueWithoutSaveConfig started!")
+        print("test_learnFunctionWithSave started!")
 
         logFolder = "testSources/gazeboProgramTests/learnFunction/logFolder"
         modelFolder = "testSources/gazeboProgramTests/learnFunction/modelFolder"
@@ -66,8 +72,28 @@ class processConfigFileTest(unittest.TestCase):
             rows = list(reader)
             self.assertGreater(len(rows), 0, "CSV file is empty")
 
+    def test_saveDataFunction(self):
+        print("test_saveDataFunction started!")
+
+        logFolder = "testSources/gazeboProgramTests/saveDataFunction/logFolder"
+        csvFilePath = "testSources/gazeboProgramTests/saveDataFunction/csvFolder/data.csv"
+
+        sharedValues.setCSVFilePath(csvFilePath)
+        sharedValues.setLogFolder(logFolder)
+
+        saveDataFromTensorboardFiles()
+
+        self.assertTrue(os.path.isdir(logFolder), "Log folder not found")
+        self.assertGreater(len(os.listdir(logFolder)), 0, "Log folder is empty")
+
+        self.assertTrue(os.path.exists(csvFilePath), "CSV file does not exist")
+        with open(csvFilePath, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            rows = list(reader)
+            self.assertGreater(len(rows), 0, "CSV file is empty")
+
     @patch('utils.continueTrainingGazebo.createDirectories')
-    def test_continueFunctionWithSave(self, mock_start):
+    def continueFunctionWithSave(self, mock_start):
         print("test_continueFunctionWithSave started!")
 
         logFolder = "testSources/gazeboProgramTests/continueFunction/logFolder"
@@ -100,7 +126,7 @@ class processConfigFileTest(unittest.TestCase):
 
     @patch('utils.trainGazebo.createDirectories')
     @patch('utils.trainGazebo.customGazeboEnv')
-    def test_learnFunctionWithoutSave(self, directory, mock_env_class):
+    def learnFunctionWithoutSave(self, directory, mock_env_class):
         print("test_goodContinueWithoutSaveConfig started!")
         mock_env = MagicMock()
         mock_env.reset.return_value = ["dummy_obs"]
