@@ -15,20 +15,15 @@ class processConfigFileTest(unittest.TestCase):
             "testSources/gazeboProgramTests/learnFunction/logFolder",
             "testSources/gazeboProgramTests/learnFunction/modelFolder",
             "testSources/gazeboProgramTests/learnFunction/csvFolder",
-            "testSources/gazeboProgramTests/continueFunction/logFolder",
-            "testSources/gazeboProgramTests/continueFunction/modelFolder",
-            "testSources/gazeboProgramTests/continueFunction/csvFolder",
             "testSources/gazeboProgramTests/saveDataFunction/csvFolder"
         ]:
-            if os.path.exists(folder):
+            if not os.path.exists(folder):
+                os.makedirs(folder)
+            else:
                 for file in os.listdir(folder):
                     os.remove(os.path.join(folder, file))
 
         csv_file_path = os.path.join("testSources/gazeboProgramTests/learnFunction/csvFolder", "data.csv")
-        with open(csv_file_path, 'w', newline='') as f:
-            writer = csv.writer(f)
-
-        csv_file_path = os.path.join("testSources/gazeboProgramTests/continueFunction/csvFolder", "data.csv")
         with open(csv_file_path, 'w', newline='') as f:
             writer = csv.writer(f)
 
