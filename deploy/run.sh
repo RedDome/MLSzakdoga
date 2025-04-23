@@ -13,12 +13,16 @@ fi
 
 FUNCTION_NAME=$1
 
+NO_LOG_FLAG=""
+if [ "$2" == "NOLOG" ]; then
+  NO_LOG_FLAG="-d"
+fi
 
 ROS_IP=$(hostname -I | awk '{print $1}')
 ROS_MASTER_URI="http://$ROS_IP:11311"
 DISPLAY=":0"
 
-docker run -d \
+docker run $NO_LOG_FLAG \
     --name $CONTAINER_NAME \
     --network host \
     --rm \
