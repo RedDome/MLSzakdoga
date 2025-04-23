@@ -6,6 +6,14 @@ CONTAINER_NAME="mlszakdoga_deploy_container"
 IMAGE_NAME="mlszakdoga_deploy"
 CONFIG_PATH="/workspaces/MLSzakdoga/config/LEARN_DEFAULT_CONFIG.yaml"
 
+if [ -z "$1" ]; then
+  echo "Rossz futtatás! Megfelelő futattás: ./run.sh Learn / ./run.sh Continue / ./run.sh SaveData"
+  exit 1
+fi
+
+FUNCTION_NAME=$1
+
+
 ROS_IP=$(hostname -I | awk '{print $1}')
 ROS_MASTER_URI="http://$ROS_IP:11311"
 DISPLAY=":0"
@@ -18,6 +26,7 @@ docker run -d \
     -e ROS_IP=$ROS_IP \
     -e DISPLAY=$DISPLAY \
     -e CONFIG=$CONFIG_PATH \
+    -e FUNCTION_NAME=$FUNCTION_NAME \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     $IMAGE_NAME
 

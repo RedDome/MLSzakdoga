@@ -13,7 +13,8 @@
                 "ROS_MASTER_URI": "http://localhost:11311",
                 "ROS_PYTHON_VERSION": "3",
                 "ROS_VERSION": "1",
-                "MPLBACKEND": "Agg"
+                "MPLBACKEND": "Agg",
+                "FUNCTION_NAME": "Learn"
             },
             "preLaunchTask": "Start All ROS Processes"
         }
