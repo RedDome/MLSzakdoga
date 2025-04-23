@@ -7,9 +7,7 @@ ENV DISPLAY=":0"
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-tk \
-    ros-noetic-catkin \
     python3-catkin-tools \
-    python3-catkin-pkg \
     ros-noetic-turtlebot3-gazebo \
     ros-noetic-turtlebot3-slam \
     ros-noetic-gazebo-ros \
@@ -29,21 +27,20 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/* 
 
-RUN ln -sf /usr/bin/python3 /usr/bin/python
-
 RUN git config --global http.postBuffer 104857600
 RUN git config --global http.lowSpeedLimit 0
 RUN git config --global http.lowSpeedTime 999
 
-RUN echo `python --version`
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN pip3 install --default-timeout=600 stable-baselines3[extra]
 RUN pip3 install --default-timeout=600 gym
+RUN pip3 install --default-timeout=600 catkin_pkg empy rospkg
 RUN pip3 install --default-timeout=600 tensorflow
 RUN pip3 install --default-timeout=600 loguru
+RUN pip3 install --default-timeout=600 numpy
+RUN pip3 install --default-timeout=600 pandas
 
-RUN if [ -d "/workspaces/MLSzakdoga/catkin_ws/src" ]; then rm -Rf /workspaces/MLSzakdoga/catkin_ws/src; fi
 RUN mkdir -p /workspaces/MLSzakdoga/catkin_ws/src
 WORKDIR /workspaces/MLSzakdoga/catkin_ws/src
 RUN git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git && \
@@ -66,6 +63,7 @@ RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc && \
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
 COPY . /workspaces/MLSzakdoga/
 WORKDIR /workspaces/MLSzakdoga/
 

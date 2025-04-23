@@ -32,9 +32,10 @@ RUN git config --global http.lowSpeedLimit 0
 RUN git config --global http.lowSpeedTime 999
 
 RUN pip3 install --upgrade pip
-RUN pip3 install --default-timeout=100 stable-baselines3[extra]
-RUN pip3 install --default-timeout=100 gym
-RUN pip3 install --default-timeout=100 catkin_pkg empy rospkg
+RUN pip3 install --upgrade setuptools
+RUN pip3 install --default-timeout=600 stable-baselines3[extra]
+RUN pip3 install --default-timeout=600 gym
+RUN pip3 install --default-timeout=600 catkin_pkg empy rospkg
 RUN pip3 install --default-timeout=600 tensorflow
 RUN pip3 install --default-timeout=600 loguru
 RUN pip3 install --default-timeout=600 numpy
