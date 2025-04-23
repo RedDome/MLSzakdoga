@@ -7,7 +7,7 @@ from stable_baselines3 import *
 from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.logger import configure
 from utils.sharedValues import sharedValues
-from utils.createDirectories import createDirectories
+from utils.createDirectories import createTrainingDirectories
 from utils.saveDataFromTensorboardFiles import saveDataFromTensorboardFiles
 from loguru import logger
 
@@ -16,7 +16,7 @@ def trainGazebo():
     
     rospy.init_node('gym_gazebo_env', anonymous=True)
 
-    createDirectories()
+    createTrainingDirectories()
 
     env = customGazeboEnv()
     check_env(env)

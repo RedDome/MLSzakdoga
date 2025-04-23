@@ -3,7 +3,23 @@ from datetime import datetime
 import os
 from loguru import logger
 
-def createDirectories():
+def createResourcesDirectories():
+    modelsDirectory = "resources/models"
+    logDirectory = "resources/logs"
+    processedDataDirectory = "resources/processedData"
+
+    if not os.path.exists(modelsDirectory):
+        os.makedirs(modelsDirectory)
+
+    if not os.path.exists(logDirectory):
+        os.makedirs(logDirectory)
+
+    if not os.path.exists(processedDataDirectory):
+        os.makedirs(processedDataDirectory)
+
+    logger.info("Resouces folders created!")    
+
+def createTrainingDirectories():
     sv = sharedValues()
     modelsDirectory = f"resources/models/{sv.learningModel}"
     logDirectory = f"resources/logs/{sv.learningModel}"

@@ -37,7 +37,7 @@ class processConfigFileTest(unittest.TestCase):
     def tearDown(self):
         self.cleanUpFolders()
 
-    @patch('utils.trainGazebo.createDirectories')
+    @patch('utils.trainGazebo.createTrainingDirectories')
     def test_learnFunctionWithSave(self, mock_start):
         print("test_learnFunctionWithSave started!")
 
