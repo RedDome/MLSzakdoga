@@ -1,4 +1,4 @@
 FunctionName: SaveData
 FunctionProperties:
-  LogFolder:
+  LogFolder: 
   CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv

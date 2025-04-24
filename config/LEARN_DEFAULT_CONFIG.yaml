@@ -3,7 +3,7 @@ FunctionProperties:
   XGoalPosition: 9.0
   YGoalPosition: 10.0
   LearningModel: PPO
-  Length: 2000
+  Length: 10000
   SaveDataAfterFinished: True
   SaveDataProperties:
     CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv

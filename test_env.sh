@@ -1,5 +1,4 @@
 #!/bin/bash
-# Környezetépítés tesztelése
 
 echo "Ellenőrizzük, hogy a szenzor adatok elérhetők-e..."
 

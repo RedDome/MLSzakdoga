@@ -1,21 +1,23 @@
 from loguru import logger
-from utils.train import train
-from utils.continuetraining import continueTrainingGazebo
+from utils.trainGazebo import trainGazebo
+from utils.continueTrainingGazebo import continueTrainingGazebo
 from utils.saveDataFromTensorboardFiles import saveDataFromTensorboardFiles
-import utils.commonvalues
+from utils.createDirectories import createResourcesDirectories
+from utils.sharedValues import sharedValues
 
 def startFunction():
+    sv = sharedValues()
     logger.info("startFunction started!")
-    functionName = utils.commonvalues.functionName 
+
+    createResourcesDirectories()
+
+    functionName = sv.functionName
     logger.info("functionName: " + str(functionName))
     
     if functionName == "Learn":
-        train()
+        trainGazebo()
     elif functionName == "Continue":
         continueTrainingGazebo()
-    elif functionName == "Capture":
-        logger.info("TBD")
-        # captureGazebo()
     elif functionName == "SaveData":
         saveDataFromTensorboardFiles()
     else:

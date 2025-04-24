@@ -21,4 +21,9 @@ else
     echo "roscore is already running."
 fi
 
-roslaunch voros_dome custom_world.launch  --screen
+roslaunch voros_dome custom_world.launch  --screen &
+
+sleep 10
+
+echo "Starting program"
+python3 /workspaces/MLSzakdoga/runprogram.py 

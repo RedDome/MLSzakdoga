@@ -1,4 +1,3 @@
-# Using the official ROS Noetic image, which includes Gazebo 11
 FROM osrf/ros:noetic-desktop-full
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,12 +32,14 @@ RUN git config --global http.lowSpeedLimit 0
 RUN git config --global http.lowSpeedTime 999
 
 RUN pip3 install --upgrade pip
-RUN pip3 install --default-timeout=100 stable-baselines3[extra]
-RUN pip3 install --default-timeout=100 gym
-RUN pip3 install --default-timeout=100 catkin_pkg empy rospkg
+RUN pip3 install --upgrade setuptools
+RUN pip3 install --default-timeout=600 stable-baselines3[extra]
+RUN pip3 install --default-timeout=600 gym
+RUN pip3 install --default-timeout=600 catkin_pkg empy rospkg
 RUN pip3 install --default-timeout=600 tensorflow
 RUN pip3 install --default-timeout=600 loguru
-RUN pip3 install --default-timeout=100 numpy opencv-python mss
+RUN pip3 install --default-timeout=600 numpy
+RUN pip3 install --default-timeout=600 pandas
 
 RUN mkdir -p /workspaces/MLSzakdoga/catkin_ws/src
 WORKDIR /workspaces/MLSzakdoga/catkin_ws/src

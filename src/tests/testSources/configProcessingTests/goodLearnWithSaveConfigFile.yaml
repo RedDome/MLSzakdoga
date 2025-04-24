@@ -1,0 +1,9 @@
+FunctionName: Learn
+FunctionProperties:
+  XGoalPosition: 44.0
+  YGoalPosition: 41.0
+  LearningModel: A2C
+  Length: 17000
+  SaveDataAfterFinished: True
+  SaveDataProperties:
+    CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/mydata.csv
