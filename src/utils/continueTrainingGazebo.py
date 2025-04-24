@@ -28,20 +28,20 @@ def continueTrainingGazebo():
     env.set_goal_position(sv.xGoal, sv.yGoal)
 
     logger.info("length: " + str(sv.length))
-    timeSteps = 1000
-    itera = sv.length // timeSteps
+    itera = 10
+    iteraLength = sv.length // itera
 
     logger.info("learningModel: " + str(sv.learningModel))
     if sv.learningModel == "A2C":
-        model = A2C.load(sv.modelPath, env=env)
+        model = A2C.load(sv.modelPath, env=env, n_steps=iteraLength)
     elif sv.learningModel == "PPO":
-        model = PPO.load(sv.modelPath, env=env)
+        model = PPO.load(sv.modelPath, env=env, n_steps=iteraLength)
     elif sv.learningModel == "DQN":
-        model = DQN.load(sv.modelPath, env=env)
+        model = DQN.load(sv.modelPath, env=env, n_steps=iteraLength)
     elif sv.learningModel == "SAC":
-        model = SAC.load(sv.modelPath, env=env)
+        model = SAC.load(sv.modelPath, env=env, n_steps=iteraLength)
     elif sv.learningModel == "TD3":
-        model = TD3.load(sv.modelPath, env=env)
+        model = TD3.load(sv.modelPath, env=env, n_steps=iteraLength)
     else:
         logger.error("Unknown learning model! Supported learning models are: A2C, PPO, DQN, SAC, TD3")
         raise ValueError(f"Unknown learning model: {sv.learningModel}")
@@ -53,9 +53,9 @@ def continueTrainingGazebo():
     savedStep = int(os.path.splitext(modelFileName)[0])
 
     for i in range(itera):
-        model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(sv.learningModel))
-        model.save(f"{sv.modelFolder}/{savedStep + timeSteps*(i+1)}")
-        logger.info("Model saved at step: " + str(savedStep + timeSteps*(i+1)))
+        model.learn(total_timesteps=iteraLength, reset_num_timesteps=False, tb_log_name=str(sv.learningModel))
+        model.save(f"{sv.modelFolder}/{savedStep + iteraLength*(i+1)}")
+        logger.info("Model saved at step: " + str(savedStep + iteraLength*(i+1)))
 
     logger.info("Learning ended!")
 

@@ -28,21 +28,22 @@ def trainGazebo():
     env.set_goal_position(sv.xGoal, sv.yGoal)
 
     logger.info("length: " + str(sv.length))
-    timeSteps = 1000
-    itera = sv.length // timeSteps
+    itera = 10
+    iteraLength = sv.length // itera
 
     logger.info("learningModel: " + str(sv.learningModel))
     if sv.learningModel == "A2C":
-        model = A2C('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = A2C('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "PPO":
-        model = PPO('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = PPO('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "DQN":
-        model = DQN('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = DQN('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "SAC":
-        model = SAC('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = SAC('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "TD3":
-        model = TD3('MlpPolicy', env, verbose=2, n_steps=itera, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = TD3('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     else:
+        logger.error("Unknown learning model! Supported learning models are: A2C, PPO, DQN, SAC, TD3")
         raise ValueError(f"Unknown learning model: {sv.learningModel}")
     
     new_logger = configure(sv.logFolder, ["stdout", "tensorboard"])
@@ -52,9 +53,9 @@ def trainGazebo():
     logger.info("modelFolder: " + str(sv.modelFolder))
 
     for i in range(itera):
-        model.learn(total_timesteps=timeSteps, reset_num_timesteps=False, tb_log_name=str(sv.learningModel))
-        model.save(f"{sv.modelFolder}/{timeSteps*(i+1)}")
-        logger.info("Model saved at step: " + str(timeSteps*(i+1)))
+        model.learn(total_timesteps=iteraLength, reset_num_timesteps=False, tb_log_name=str(sv.learningModel))
+        model.save(f"{sv.modelFolder}/{iteraLength*(i+1)}")
+        logger.info("Model saved at step: " + str(iteraLength*(i+1)))
 
     logger.info("Learning ended!")
 
