@@ -13,9 +13,9 @@ fi
 
 FUNCTION_NAME=$1
 
-NO_LOG_FLAG=""
-if [ "$2" == "NOLOG" ]; then
-  NO_LOG_FLAG="-d"
+NO_LOG_FLAG="-d"
+if [ "$2" == "WITHLOG" ]; then
+  NO_LOG_FLAG=""
 fi
 
 ROS_IP=$(hostname -I | awk '{print $1}')
