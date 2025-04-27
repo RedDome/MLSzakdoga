@@ -2,22 +2,23 @@ from utils.sharedValues import sharedValues
 from datetime import datetime
 import os
 from loguru import logger
+import csv
 
 def createResourcesDirectories():
+    sv = sharedValues()
     modelsDirectory = "resources/models"
     logDirectory = "resources/logs"
     processedDataDirectory = "resources/processedData"
 
-    if not os.path.exists(modelsDirectory):
-        os.makedirs(modelsDirectory)
+    for directory in [modelsDirectory, logDirectory, processedDataDirectory]:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-    if not os.path.exists(logDirectory):
-        os.makedirs(logDirectory)
+    if not os.path.exists(sv.csvFilePath):
+        with open(sv.csvFilePath, mode='w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
 
-    if not os.path.exists(processedDataDirectory):
-        os.makedirs(processedDataDirectory)
-
-    logger.info("Resouces folders created!")    
+    logger.info("Resources folders and csv file created!")    
 
 def createTrainingDirectories():
     sv = sharedValues()
