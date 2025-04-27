@@ -11,17 +11,17 @@ class processConfigFileTest(unittest.TestCase):
     
     @classmethod
     def cleanUpFolders(cls):
-        for folder in [
-            "testSources/gazeboProgramTests/learnFunction/logFolder",
-            "testSources/gazeboProgramTests/learnFunction/modelFolder",
-            "testSources/gazeboProgramTests/learnFunction/csvFolder",
-            "testSources/gazeboProgramTests/saveDataFunction/csvFolder"
-        ]:
-            if not os.path.exists(folder):
-                os.makedirs(folder)
+        learnFunctionLogFolder = "testSources/gazeboProgramTests/learnFunction/logFolder"
+        learnFunctionmodelFolder = "testSources/gazeboProgramTests/learnFunction/modelFolder"
+        learnFunctionCsvFolder = "testSources/gazeboProgramTests/learnFunction/csvFolder"
+        saveDataFunctionCsvFolder = "testSources/gazeboProgramTests/saveDataFunction/csvFolder"
+
+        for directory in [learnFunctionLogFolder, learnFunctionmodelFolder, learnFunctionCsvFolder, saveDataFunctionCsvFolder]:
+            if not os.path.exists(directory):
+                os.makedirs(directory)
             else:
-                for file in os.listdir(folder):
-                    os.remove(os.path.join(folder, file))
+                for file in os.listdir(directory):
+                    os.remove(os.path.join(directory, file))
 
         csv_file_path = os.path.join("testSources/gazeboProgramTests/learnFunction/csvFolder", "data.csv")
         with open(csv_file_path, 'w', newline='') as f:

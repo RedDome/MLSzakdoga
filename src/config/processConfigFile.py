@@ -10,7 +10,7 @@ DEFAULTS = {
     'LearningModel': 'PPO',
     'Length' : 8000,
     'SaveDataAfterFinished' : False,
-    'CsvFilePath': '/workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv'
+    'CsvFilePath': 'resources/processedData/tensorboard_data.csv'
 }
 
 def getDataWithDefault(data, key, default):
