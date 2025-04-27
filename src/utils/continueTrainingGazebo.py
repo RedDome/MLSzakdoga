@@ -30,18 +30,19 @@ def continueTrainingGazebo():
     logger.info("length: " + str(sv.length))
     itera = 10
     iteraLength = sv.length // itera
+    logLength = iteraLength // 5
 
     logger.info("learningModel: " + str(sv.learningModel))
     if sv.learningModel == "A2C":
-        model = A2C.load(sv.modelPath, env=env, n_steps=iteraLength)
+        model = A2C.load(sv.modelPath, env=env, n_steps=logLength)
     elif sv.learningModel == "PPO":
-        model = PPO.load(sv.modelPath, env=env, n_steps=iteraLength)
+        model = PPO.load(sv.modelPath, env=env, n_steps=logLength)
     elif sv.learningModel == "DQN":
-        model = DQN.load(sv.modelPath, env=env, n_steps=iteraLength)
+        model = DQN.load(sv.modelPath, env=env, n_steps=logLength)
     elif sv.learningModel == "SAC":
-        model = SAC.load(sv.modelPath, env=env, n_steps=iteraLength)
+        model = SAC.load(sv.modelPath, env=env, n_steps=logLength)
     elif sv.learningModel == "TD3":
-        model = TD3.load(sv.modelPath, env=env, n_steps=iteraLength)
+        model = TD3.load(sv.modelPath, env=env, n_steps=logLength)
     else:
         logger.error("Unknown learning model! Supported learning models are: A2C, PPO, DQN, SAC, TD3")
         raise ValueError(f"Unknown learning model: {sv.learningModel}")

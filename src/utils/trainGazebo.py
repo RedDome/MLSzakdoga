@@ -30,18 +30,19 @@ def trainGazebo():
     logger.info("length: " + str(sv.length))
     itera = 10
     iteraLength = sv.length // itera
+    logLength = iteraLength // 5
 
     logger.info("learningModel: " + str(sv.learningModel))
     if sv.learningModel == "A2C":
-        model = A2C('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = A2C('MlpPolicy', env, verbose=2, n_steps=logLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "PPO":
-        model = PPO('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = PPO('MlpPolicy', env, verbose=2, n_steps=logLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "DQN":
-        model = DQN('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = DQN('MlpPolicy', env, verbose=2, n_steps=logLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "SAC":
-        model = SAC('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = SAC('MlpPolicy', env, verbose=2, n_steps=logLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     elif sv.learningModel == "TD3":
-        model = TD3('MlpPolicy', env, verbose=2, n_steps=iteraLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
+        model = TD3('MlpPolicy', env, verbose=2, n_steps=logLength, batch_size=64, ent_coef=0.01, learning_rate=0.0003, tensorboard_log=sv.logFolder)
     else:
         logger.error("Unknown learning model! Supported learning models are: A2C, PPO, DQN, SAC, TD3")
         raise ValueError(f"Unknown learning model: {sv.learningModel}")
