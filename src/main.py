@@ -1,4 +1,8 @@
 from loguru import logger
+import os
+os.environ['TZ'] = 'Europe/Budapest'
+import time
+time.tzset()
 
 logger.remove(0)
 logger.add("app.log")
