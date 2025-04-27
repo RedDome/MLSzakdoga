@@ -6,4 +6,4 @@ FunctionProperties:
   Length: 10000
   SaveDataAfterFinished: True
   SaveDataProperties:
-    CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv
+    CsvFilePath: resources/processedData/tensorboard_data.csv
