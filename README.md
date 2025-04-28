@@ -1,5 +1,5 @@
 # Szakdolgozat
-ELTE IK Programtervező Informatikus Bsc Szakdolgozat
+ELTE IK Programtervező Informatikus Bsc Szakdolgozat<br>
 Készítette: Vörös Döme QK8IUC
 
 # Szakdolgozat címe
