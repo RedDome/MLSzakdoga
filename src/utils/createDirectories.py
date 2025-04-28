@@ -14,9 +14,10 @@ def createResourcesDirectories():
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-    if not os.path.exists(sv.csvFilePath):
-        with open(sv.csvFilePath, mode='w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
+    if ((sv.saveDataAfterFinished and (sv.functionName == "Learn" or sv.functionName == "Continue")) or sv.functionName == "SaveData"):
+        if not os.path.exists(sv.csvFilePath):
+            with open(sv.csvFilePath, mode='w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
 
     logger.info("Resources folders and csv file created!")    
 
