@@ -6,6 +6,9 @@ import unittest
 from unittest.mock import patch, MagicMock, mock_open
 import os
 import csv
+os.environ['TZ'] = 'Europe/Budapest'
+import time
+time.tzset()
 
 class processConfigFileTest(unittest.TestCase):
     

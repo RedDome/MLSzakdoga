@@ -3,6 +3,10 @@ from unittest.mock import patch, MagicMock, mock_open
 import yaml
 from config.processConfigFile import processConfigFile, DEFAULTS
 from utils.sharedValues import sharedValues
+import os
+os.environ['TZ'] = 'Europe/Budapest'
+import time
+time.tzset()
 
 class processConfigFileTest(unittest.TestCase):
     
@@ -78,7 +82,7 @@ class processConfigFileTest(unittest.TestCase):
 
         processConfigFile(path)
 
-        self.assertEqual(sharedValues.csvFilePath, "/workspaces/MLSzakdoga/resources/processedData/tensorboard_data.csv")
+        self.assertEqual(sharedValues.csvFilePath, "resources/processedData/tensorboard_data.csv")
 
     @patch('config.processConfigFile.startFunction')
     def test_goodLearnWithSaveConfig(self, mock_start):
@@ -93,7 +97,7 @@ class processConfigFileTest(unittest.TestCase):
         self.assertEqual(sharedValues.learningModel, "A2C")
         self.assertEqual(sharedValues.length, 17000)
         self.assertEqual(sharedValues.saveDataAfterFinished, True)
-        self.assertEqual(sharedValues.csvFilePath, "/workspaces/MLSzakdoga/resources/processedData/mydata.csv")
+        self.assertEqual(sharedValues.csvFilePath, "resources/processedData/mydata.csv")
 
     @patch('config.processConfigFile.startFunction')
     def test_goodLearnWithoutSaveConfig(self, mock_start):
@@ -118,13 +122,13 @@ class processConfigFileTest(unittest.TestCase):
         processConfigFile(path)
 
         self.assertEqual(sharedValues.functionName, "Continue")
-        self.assertEqual(sharedValues.modelPath, "/workspaces/MLSzakdoga/resources/models/mycoolmodel.zip")
+        self.assertEqual(sharedValues.modelPath, "resources/models/mycoolmodel.zip")
         self.assertEqual(sharedValues.xGoal, 1.0)
         self.assertEqual(sharedValues.yGoal, 1.0)
         self.assertEqual(sharedValues.learningModel, "TD3")
         self.assertEqual(sharedValues.length, 77000)
         self.assertEqual(sharedValues.saveDataAfterFinished, True)
-        self.assertEqual(sharedValues.csvFilePath, "/workspaces/MLSzakdoga/resources/processedData/mycooltable.csv")
+        self.assertEqual(sharedValues.csvFilePath, "resources/processedData/mycooltable.csv")
 
     @patch('config.processConfigFile.startFunction')
     def test_goodContinueWithoutSaveConfig(self, mock_start):
@@ -134,7 +138,7 @@ class processConfigFileTest(unittest.TestCase):
         processConfigFile(path)
 
         self.assertEqual(sharedValues.functionName, "Continue")
-        self.assertEqual(sharedValues.modelPath, "/workspaces/MLSzakdoga/resources/models/mycoolmodel.zip")
+        self.assertEqual(sharedValues.modelPath, "resources/models/mycoolmodel.zip")
         self.assertEqual(sharedValues.xGoal, 1.0)
         self.assertEqual(sharedValues.yGoal, 1.0)
         self.assertEqual(sharedValues.learningModel, "TD3")
@@ -150,8 +154,8 @@ class processConfigFileTest(unittest.TestCase):
         processConfigFile(path)
 
         self.assertEqual(sharedValues.functionName, "SaveData")
-        self.assertEqual(sharedValues.logFolder, "/workspaces/MLSzakdoga/resources/logs/mycoolfolder")
-        self.assertEqual(sharedValues.csvFilePath, "/workspaces/MLSzakdoga/resources/processedData/datatable.csv")
+        self.assertEqual(sharedValues.logFolder, "resources/logs/mycoolfolder")
+        self.assertEqual(sharedValues.csvFilePath, "resources/processedData/datatable.csv")
 
 
 if __name__ == '__main__':

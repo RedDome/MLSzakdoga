@@ -1,4 +1,4 @@
 FunctionName: SaveData
 FunctionProperties:
-  LogFolder: /workspaces/MLSzakdoga/resources/logs/mycoolfolder
-  CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/datatable.csv
+  LogFolder: resources/logs/mycoolfolder
+  CsvFilePath: resources/processedData/datatable.csv

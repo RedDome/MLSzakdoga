@@ -1,10 +1,10 @@
 FunctionName: Continue
 FunctionProperties:
-  ModelPath: /workspaces/MLSzakdoga/resources/models/mycoolmodel.zip
+  ModelPath: resources/models/mycoolmodel.zip
   XGoalPosition: 1.0
   YGoalPosition: 1.0
   LearningModel: TD3
   Length: 77000
   SaveDataAfterFinished: False
   SaveDataProperties:
-    CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/mycooltable.csv
+    CsvFilePath: resources/processedData/mycooltable.csv

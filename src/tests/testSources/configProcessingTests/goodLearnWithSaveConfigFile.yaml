@@ -6,4 +6,4 @@ FunctionProperties:
   Length: 17000
   SaveDataAfterFinished: True
   SaveDataProperties:
-    CsvFilePath: /workspaces/MLSzakdoga/resources/processedData/mydata.csv
+    CsvFilePath: resources/processedData/mydata.csv
