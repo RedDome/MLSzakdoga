@@ -43,9 +43,9 @@ RUN pip3 install --default-timeout=600 pandas
 
 RUN mkdir -p /workspaces/MLSzakdoga/catkin_ws/src
 WORKDIR /workspaces/MLSzakdoga/catkin_ws/src
-RUN git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git && \
-    git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3.git && \
-    git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+RUN git clone -b noetic https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git && \
+    git clone -b noetic https://github.com/ROBOTIS-GIT/turtlebot3.git && \
+    git clone -b noetic https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
 
 RUN apt-get update && rosdep update && \
     rosdep install --from-paths . --ignore-src -r -y
